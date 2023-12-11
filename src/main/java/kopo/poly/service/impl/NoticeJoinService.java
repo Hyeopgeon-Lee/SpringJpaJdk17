@@ -41,7 +41,7 @@ public class NoticeJoinService implements INoticeJoinService {
         log.info(this.getClass().getName() + ".getNoticeListUsingJoinColumn Start!");
 
         // 공지사항 전체 리스트 조회하기
-        List<NoticeJoinEntity> rList = noticeJoinRepository.findAllByOrderByNoticeSeqDesc();
+        List<NoticeJoinEntity> rList = noticeJoinRepository.findAllByOrderByNoticeYnDescNoticeSeqDesc();
 
         List<NoticeDTO> list = new LinkedList<>(); // 조회 결과를 List<NoticeDTO> 변환하기 위해 사용
 

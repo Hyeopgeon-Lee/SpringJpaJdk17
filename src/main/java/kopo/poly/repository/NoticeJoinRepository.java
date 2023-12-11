@@ -9,6 +9,5 @@ import java.util.List;
 @Repository
 public interface NoticeJoinRepository extends JpaRepository<NoticeJoinEntity, Long> {
 
-    List<NoticeJoinEntity> findAllByOrderByNoticeSeqDesc();
-
+    List<NoticeJoinEntity> findAllByOrderByNoticeYnDescNoticeSeqDesc();
 }
