@@ -34,7 +34,7 @@ public class NoticeJoinService implements INoticeJoinService {
 
     private final NoticeFetchRepository noticeFetchRepository; // JPQL 사용을 위한 Repository
 
-    private final JPAQueryFactory queryFactory;
+    private final JPAQueryFactory queryFactory; // QueryDSL 사용을 위한 객체 가져오기
 
     @Override
     public List<NoticeDTO> getNoticeListUsingJoinColumn() {
