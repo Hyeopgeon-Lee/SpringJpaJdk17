@@ -127,7 +127,7 @@ public class UserInfoService implements IUserInfoService {
         log.info("userId : " + userId);
         log.info("password : " + password);
 
-        // 로그인을 위해 아이디와 비밀번호가 일치하는지 확인하기 위한 mapper 호출하기
+        // 로그인을 위해 아이디와 비밀번호가 일치하는지 확인하기 위한 JPA 호출하기
         Optional<UserInfoEntity> rEntity = userInfoRepository.findByUserIdAndPassword(userId, password);
 
         if (rEntity.isPresent()) {
