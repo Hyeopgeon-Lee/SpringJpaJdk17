@@ -1,7 +1,7 @@
 package kopo.poly.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.Data;
+import lombok.Builder;
 
 import java.util.List;
 
@@ -10,17 +10,16 @@ import java.util.List;
 // 값이 없으면 0으로 저장함
 // Include.NON_NULL은 값이 NULL인 것만 방지하기 때문에 숫자 타입은 출력되는 문제가 있음
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
-@Data
-public class MelonDTO {
-
-    String collectTime; // 수집 시간
-    String song; // 노래 제목
-    String singer; // 가수
-    int singerCnt; // 차트에 등록된 가수별 노래 수
-
-    String updateSinger; // 수정할 가수명(MongoDB 필드 수정 교육용)
-    String nickname; // 추가될 닉네임(MongoDB 필드 추가 교육용)
-    List<String> member; // 추가될 그룹 맴버 이름들(MongoDB 필드 추가 교육용)
-    String addFieldValue; // 추가될 필드 값(MongoDB 필드 추가 교육용)
+@Builder
+public record MelonDTO(
+        String collectTime, // 수집 시간
+        String song, // 노래 제목
+        String singer, // 가수
+        int singerCnt, // 차트에 등록된 가수별 노래 수
+        String updateSinger, // 수정할 가수명(MongoDB 필드 수정 교육용)
+        String nickname, // 추가될 닉네임(MongoDB 필드 추가 교육용)
+        List<String> member, // 추가될 그룹 맴버 이름들(MongoDB 필드 추가 교육용)
+        String addFieldValue // 추가될 필드 값(MongoDB 필드 추가 교육용)
+) {
 }
 
