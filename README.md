@@ -1,6 +1,7 @@
 # Spring Boot Frameworks 3.x + Spring Data JPA 실습
 
 Spring 3.x부터 자바8 지원불가 정책에 따라 자바 17 기반 실습 프로그래밍 코드 공유
+공유하는 프로그래밍 코드를 학과 수업에서 교육하는 프로그래밍 코드입니다.
 
 * 작성자 : 한국폴리텍대학 서울강서캠퍼스 빅데이터과 이협건 교수
 * 이메일 : hglee67@kopo.ac.kr
