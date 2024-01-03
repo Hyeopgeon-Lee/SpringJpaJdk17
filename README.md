@@ -1,4 +1,4 @@
-# 자바 17 기반 Spring Boot Frameworks + Spring Data JPA 실습
+# Spring Boot Frameworks 3.x + Spring Data JPA 실습
 
 Spring 3.x부터 자바8 지원불가 정책에 따라 자바 17 기반 실습 프로그래밍 코드 공유
 
