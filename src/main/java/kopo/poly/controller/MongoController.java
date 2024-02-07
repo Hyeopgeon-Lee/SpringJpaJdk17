@@ -1,13 +1,17 @@
 package kopo.poly.controller;
 
-import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
+import kopo.poly.controller.response.CommonResponse;
 import kopo.poly.dto.MongoDTO;
 import kopo.poly.dto.MsgDTO;
 import kopo.poly.service.IMongoService;
-import kopo.poly.util.CmmUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,33 +25,21 @@ public class MongoController {
     private final IMongoService mongoService;
 
     @PostMapping(value = "test")
-    public MsgDTO test(HttpServletRequest request) throws Exception {
+    public ResponseEntity test(@Valid @RequestBody MongoDTO pDTO, BindingResult bindingResult) throws Exception {
 
         log.info(this.getClass().getName() + ".test Start!");
 
-        int res = 0;
+        if (bindingResult.hasErrors()) { // Spring Validation 맞춰 잘 바인딩되었는지 체크
+            return CommonResponse.getErrors(bindingResult); // 에러 메시지를 전달
+        }
+
         String msg; // 저장 결과 메시지
 
-        String userName = CmmUtil.nvl(request.getParameter("userName")); // 이름
-        String addr = CmmUtil.nvl(request.getParameter("addr")); // 주소
-        String email = CmmUtil.nvl(request.getParameter("email")); // 이메일
+        // 반드시, 값을 받았으면, 꼭 로그를 찍어서 값이 제대로 들어오는지 파악해야 함
+        log.info("pDTO " + pDTO);
 
-        /*
-         * ####################################################################################
-         * 반드시, 값을 받았으면, 꼭 로그를 찍어서 값이 제대로 들어오는지 파악해야함 반드시 작성할 것
-         * ####################################################################################
-         */
-        log.info("userName: " + userName);
-        log.info("addr : " + addr);
-        log.info("email : " + email);
+        int res = mongoService.mongoTest(pDTO);
 
-        // 데이터 저장하기 위해 DTO에 저장하기
-        MongoDTO pDTO = MongoDTO.builder().userName(userName).addr(addr).email(email).build();
-
-        if (!userName.isEmpty()) { // 이름은 필수 저장
-            res = mongoService.mongoTest(pDTO);
-
-        }
 
         if (res == 1) {
             msg = "저장 성공하였습니다.";
@@ -61,7 +53,10 @@ public class MongoController {
 
         log.info(this.getClass().getName() + ".test End!");
 
-        return dto;
+        return ResponseEntity.ok(
+                CommonResponse.of(HttpStatus.OK, HttpStatus.OK.series().name(), dto));
     }
+
+
 }
 

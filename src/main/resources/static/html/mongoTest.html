@@ -5,6 +5,7 @@
     <title>MongoDB 데이터 저장하기 테스트</title>
     <link rel="stylesheet" href="/css/table.css"/>
     <script type="text/javascript" src="/js/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="/js/jquery.serializeObject.min.js"></script>
     <script type="text/javascript">
 
         // HTML로딩이 완료되고, 실행됨
@@ -16,12 +17,24 @@
                 $.ajax({
                         url: "/mongo/test",
                         type: "post", // 전송방식은 Post
+                        contentType: "application/json",
                         dataType: "JSON", // 전송 결과는 JSON으로 받기
-                        data: $("#f").serialize(), // form 태그 내 input 등 객체를 자동으로 전송할 형태로 변경하기
-                        success: function (json) { // /melon/getSingerSongCnt 호출이 성공했다면..
-                            alert(json.msg)
+                        data: JSON.stringify($("#f").serializeObject())// form 태그 내 input 등 객체를 자동으로 전송할 형태로 변경하기
+                    }
+                ).then(
+                    function (json) { // 성공
+                        alert(json.data.msg); // 메시지 띄우기
+                    },
+                    function (json) { // 실패
+                        const result = json.responseJSON.data;
+
+                        console.log(result)
+                        let errMsg = "";
+                        for (const data of result) {
+                            errMsg += (data.defaultMessage + "\n")
 
                         }
+                        alert(errMsg); // 메시지 띄우기
                     }
                 )
             })
