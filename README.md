@@ -15,6 +15,9 @@ Spring 3.x부터 자바8 지원불가 정책에 따라 자바 17 기반 실습 �
 5. JPA 조인 실습(JPQL을 활용한 FETCH Join, QueryDSL 실습)
 6. JPA를 활용한 회원가입, 로그인 구현
 7. 실습내용 지속적으로 추가 예정
+9. 웹크롤링으로 수집된 데이터를 MongoDB에 저장 및 조회, 수정, 삭제 프로그래밍
+10. RedisDB를 활용한 캐싱 프로그래밍
+11. 음성명령으로 CGV 영화 순위 정보를 웹크롤링한 뒤, RedisDB에 저장하는 프로그래밍
 
 ## 주요 적용 프레임워크
 * Spring Boot Frameworks, Spring Data JPA, QueryDSL
