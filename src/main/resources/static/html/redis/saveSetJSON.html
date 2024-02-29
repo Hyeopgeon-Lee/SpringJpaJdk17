@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Redis Set 구조에 JSON 형태로 저장</title>
+    <link rel="stylesheet" href="/css/table.css"/>
+    <script type="text/javascript" src="/js/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript">
+
+        // HTML로딩이 완료되고, 실행됨
+        $(document).ready(function () {
+
+            // 버튼 클릭했을때, 발생되는 이벤트 생성함(onclick 이벤트와 동일함)
+            $("#btnAdd").on("click", function () {
+                $("#userData").append("<input type=\"text\" name=\"name\" placeholder=\"이름\"> ");
+                $("#userData").append("<input type=\"text\" name=\"email\" placeholder=\"이메일\"> ");
+                $("#userData").append("<input type=\"text\" name=\"addr\" placeholder=\"주소\"> ");
+                $("#userData").append("<input type=\"button\" class=\"btnRemove\" value=\"Remove\">");
+                $("#userData").append("<br/>");
+
+                $(".btnRemove").on("click", function () {
+                    $(this).prev().remove(); // remove the textbox 이름
+                    $(this).prev().remove(); // remove the textbox 이메일
+                    $(this).prev().remove(); // remove the textbox 주소
+                    $(this).next().remove(); // remove the <br>
+                    $(this).remove(); // remove the button
+                });
+
+            })
+
+            // 버튼 클릭했을때, 발생되는 이벤트 생성함(onclick 이벤트와 동일함)
+            $("#btnSend").on("click", function () {
+
+                let jsonObj = [] // Controller에 전달할 데이터 구조
+
+                let cnt = $("input[name=name]").length; // 동적으로 생성된 text 수
+
+                for (let i = 0; i < cnt; i++) { // 동적으로 생성된 text만큼 반복
+                    const data = { // 전송할 데이터 구조 만들기 List<RedisDTO> 타입으로 받을 수 있게 변경
+                        "name": $("input[name=name]").eq(i).val(),
+                        "email": $("input[name=email]").eq(i).val(),
+                        "addr": $("input[name=addr]").eq(i).val()
+                    }
+
+                    jsonObj.push(data); // 데이터 구조 넣기
+
+                }
+
+                $.ajax({ // Ajax 호출해서 RedisDB 저장 및 조회하기
+                    url: "/redis/v1/saveSetJSON",
+                    type: "post", // 전송방식은 Post
+                    contentType: "application/json",
+                    dataType: "JSON", // 전송 결과는 JSON으로 받기
+                    data: JSON.stringify(jsonObj) // 앞서 작성한 JSON 데이터 구조 넣기
+
+                }).then(
+                    function (json) { // 성공
+
+                        $("#redisData").empty(); // 기존 조회 내용 지우기
+
+                        const result = json.data;
+
+                        for (const data of result) {
+                            $("#redisData").append("<div class=\"divTableRow\">");
+                            $("#redisData").append("<div class=\"divTableCell\">" + data.name + "</div>");
+                            $("#redisData").append("<div class=\"divTableCell\">" + data.email + "</div>");
+                            $("#redisData").append("<div class=\"divTableCell\">" + data.addr + "</div>");
+                            $("#redisData").append("</div>");
+                        }
+
+                    }
+                );
+            })
+        })
+    </script>
+</head>
+<body>
+<h2>Redis Set 구조에 JSON 형태로 저장</h2>
+<hr/>
+<br/>
+<form name="f" id="f">
+    <div class="divTable minimalistBlack">
+        <div class="divTableBody">
+            <div class="divTableRow">
+                <div class="divTableCell">입력정보</div>
+                <div class="divTableCell" id="userData">
+                    <input type="text" name="name" placeholder="이름">
+                    <input type="text" name="email" placeholder="이메일">
+                    <input type="text" name="addr" placeholder="주소">
+                    <input type="button" id="btnAdd" value="Add"><br/>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <button id="btnSend" type="button">저장하기</button>
+    </div>
+</form>
+<br/><br/>
+<div class="divTable minimalistBlack">
+    <div class="divTableHeading">
+        <div class="divTableRow">
+            <div class="divTableHead">이름</div>
+            <div class="divTableHead">이메일</div>
+            <div class="divTableHead">주소</div>
+        </div>
+    </div>
+    <div class="divTableBody" id="redisData"></div>
+</div>
+</body>
+</html>

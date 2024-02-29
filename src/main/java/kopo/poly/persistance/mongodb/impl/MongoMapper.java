@@ -25,7 +25,7 @@ public class MongoMapper extends AbstractMongoDBComon implements IMongoMapper {
 
         log.info(this.getClass().getName() + ".insertData Start!");
 
-        int res;
+        int res = 0;
 
         // 데이터를 저장할 컬렉션 생성
         super.createCollection(mongodb, colNm);

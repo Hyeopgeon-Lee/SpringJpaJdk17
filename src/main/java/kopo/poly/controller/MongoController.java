@@ -15,48 +15,45 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
 @Slf4j
-@RequestMapping(value = "/mongo")
+@RequestMapping(value = "/mongo/v1")
 @RequiredArgsConstructor
 @RestController
 public class MongoController {
 
     private final IMongoService mongoService;
 
-    @PostMapping(value = "test")
-    public ResponseEntity test(@Valid @RequestBody MongoDTO pDTO, BindingResult bindingResult) throws Exception {
+    @PostMapping(value = "basic")
+    public ResponseEntity basic(@Valid @RequestBody MongoDTO pDTO, BindingResult bindingResult) throws Exception {
 
-        log.info(this.getClass().getName() + ".test Start!");
+        log.info(this.getClass().getName() + ".basic Start!");
 
         if (bindingResult.hasErrors()) { // Spring Validation 맞춰 잘 바인딩되었는지 체크
-            return CommonResponse.getErrors(bindingResult); // 에러 메시지를 전달
+            return CommonResponse.getErrors(bindingResult); // 유효성 검증 결과에 따른 에러 메시지 전달
+
         }
 
-        String msg; // 저장 결과 메시지
+        String msg = ""; // 저장 결과 메시지
 
-        // 반드시, 값을 받았으면, 꼭 로그를 찍어서 값이 제대로 들어오는지 파악해야 함
-        log.info("pDTO " + pDTO);
+
+        log.info("pDTO : " + pDTO); // 입력 받은 값 확인하기
 
         int res = mongoService.mongoTest(pDTO);
-
 
         if (res == 1) {
             msg = "저장 성공하였습니다.";
 
         } else {
             msg = "저장 실패하였습니다.";
+
         }
 
-        // 결과 메시지 전달하기
-        MsgDTO dto = MsgDTO.builder().msg(msg).build();
+        MsgDTO dto = MsgDTO.builder().result(res).msg(msg).build();
 
-        log.info(this.getClass().getName() + ".test End!");
+        log.info(this.getClass().getName() + ".basic End!");
 
         return ResponseEntity.ok(
                 CommonResponse.of(HttpStatus.OK, HttpStatus.OK.series().name(), dto));
     }
-
-
 }
 

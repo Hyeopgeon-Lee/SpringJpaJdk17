@@ -33,10 +33,6 @@ public class MelonMapper extends AbstractMongoDBComon implements IMelonMapper {
 
         int res = 0;
 
-        if (pList == null) {
-            pList = new LinkedList<>();
-        }
-
         // 데이터를 저장할 컬렉션 생성
         super.createCollection(mongodb, colNm, "collectTime");
 
@@ -44,9 +40,7 @@ public class MelonMapper extends AbstractMongoDBComon implements IMelonMapper {
         MongoCollection<Document> col = mongodb.getCollection(colNm);
 
         for (MelonDTO pDTO : pList) {
-            // 레코드 한개씩 저장하기
-            col.insertOne(new Document(new ObjectMapper().convertValue(pDTO, Map.class)));
-
+            col.insertOne(new Document(new ObjectMapper().convertValue(pDTO, Map.class))); // 레코드 한개씩 저장하기
         }
 
         res = 1;
@@ -80,17 +74,10 @@ public class MelonMapper extends AbstractMongoDBComon implements IMelonMapper {
         FindIterable<Document> rs = col.find(new Document()).projection(projection);
 
         for (Document doc : rs) {
-            if (doc == null) {
-                doc = new Document();
-
-            }
-
-            // 조회 잘되나 출력해 봄
             String song = CmmUtil.nvl(doc.getString("song"));
             String singer = CmmUtil.nvl(doc.getString("singer"));
 
-            log.info("song : " + song);
-            log.info("singer : " + singer);
+            log.info("song : " + song + "/ singer : " + singer);
 
             MelonDTO rDTO = MelonDTO.builder().song(song).singer(singer).build();
 
@@ -126,16 +113,10 @@ public class MelonMapper extends AbstractMongoDBComon implements IMelonMapper {
         AggregateIterable<Document> rs = col.aggregate(pipeline).allowDiskUse(true);
 
         for (Document doc : rs) {
-
-            if (doc == null) {
-                doc = new Document();
-            }
-
             String singer = doc.getString("singer");
             int singerCnt = doc.getInteger("singerCnt", 0);
 
-            log.info("singer : " + singer);
-            log.info("singerCnt : " + singerCnt);
+            log.info("singer : " + singer + "/ singerCnt : " + singerCnt);
 
             MelonDTO rDTO = MelonDTO.builder().singer(singer).singerCnt(singerCnt).build();
 
@@ -182,17 +163,8 @@ public class MelonMapper extends AbstractMongoDBComon implements IMelonMapper {
         FindIterable<Document> rs = col.find(query).projection(projection);
 
         for (Document doc : rs) {
-            if (doc == null) {
-                doc = new Document();
-
-            }
-
-            // 조회 잘되나 출력해 봄
             String song = CmmUtil.nvl(doc.getString("song"));
             String singer = CmmUtil.nvl(doc.getString("singer"));
-
-            log.info("song : " + song);
-            log.info("singer : " + singer);
 
             MelonDTO rDTO = MelonDTO.builder().song(song).singer(singer).build();
 
@@ -229,10 +201,6 @@ public class MelonMapper extends AbstractMongoDBComon implements IMelonMapper {
 
         int res = 0;
 
-        if (pList == null) {
-            pList = new LinkedList<>();
-        }
-
         // 데이터를 저장할 컬렉션 생성
         super.createCollection(mongodb, colNm, "collectTime");
 
@@ -241,8 +209,8 @@ public class MelonMapper extends AbstractMongoDBComon implements IMelonMapper {
 
         List<Document> list = new ArrayList<>();
 
-        // 람다식 활용 -> 사용
-        pList.forEach(melon ->
+        // 람다식 활용하여 병렬 처리(순서 상관없이 저장) parallelStream과 -> 사용
+        pList.parallelStream().forEach(melon ->
                 list.add(new Document(new ObjectMapper().convertValue(melon, Map.class))));
 
         // 레코드 리스트 단위로 한번에 저장하기
@@ -317,17 +285,12 @@ public class MelonMapper extends AbstractMongoDBComon implements IMelonMapper {
         FindIterable<Document> rs = col.find(query).projection(projection);
 
         for (Document doc : rs) {
-            if (doc == null) {
-                doc = new Document();
-
-            }
 
             // MongoDB 조회 결과를 MelonDTO 저장하기 위해 변수에 저장
             String song = CmmUtil.nvl(doc.getString("song"));
             String singer = CmmUtil.nvl(doc.getString("singer"));
 
-            log.info("song : " + song);
-            log.info("singer : " + singer);
+            log.info("song : " + song + "/ singer : " + singer);
 
             MelonDTO rDTO = MelonDTO.builder().song(song).singer(singer).build();
 
@@ -404,19 +367,13 @@ public class MelonMapper extends AbstractMongoDBComon implements IMelonMapper {
         FindIterable<Document> rs = col.find(query).projection(projection);
 
         for (Document doc : rs) {
-            if (doc == null) {
-                doc = new Document();
-
-            }
 
             // MongoDB 조회 결과를 MelonDTO 저장하기 위해 변수에 저장
             String song = CmmUtil.nvl(doc.getString("song"));
             String singer = CmmUtil.nvl(doc.getString("singer"));
             String nickname = CmmUtil.nvl(doc.getString("nickname"));
 
-            log.info("song : " + song);
-            log.info("singer : " + singer);
-            log.info("nickname : " + nickname);
+            log.info("song : " + song + "/ singer : " + singer + "/ nickname : " + nickname);
 
             MelonDTO rDTO = MelonDTO.builder().song(song).singer(singer).nickname(nickname).build();
 
@@ -427,7 +384,6 @@ public class MelonMapper extends AbstractMongoDBComon implements IMelonMapper {
         log.info(this.getClass().getName() + ".getSingerSongNickname End!");
 
         return rList;
-
     }
 
     @Override
@@ -443,8 +399,7 @@ public class MelonMapper extends AbstractMongoDBComon implements IMelonMapper {
         List<String> member = pDTO.member();
 
         log.info("pColNm : " + pColNm);
-        log.info("singer : " + singer);
-        log.info("member : " + member);
+        log.info("pDTO : " + pDTO);
 
         // 조회할 조건(SQL의 WHERE 역할 /  SELECT * FROM MELON_20220321 where singer ='방탄소년단')
         Document query = new Document();
@@ -495,19 +450,13 @@ public class MelonMapper extends AbstractMongoDBComon implements IMelonMapper {
         FindIterable<Document> rs = col.find(query).projection(projection);
 
         for (Document doc : rs) {
-            if (doc == null) {
-                doc = new Document();
-
-            }
 
             // MongoDB 조회 결과를 MelonDTO 저장하기 위해 변수에 저장
             String song = CmmUtil.nvl(doc.getString("song"));
             String singer = CmmUtil.nvl(doc.getString("singer"));
             List<String> member = doc.getList("member", String.class, new ArrayList<>());
 
-            log.info("song : " + song);
-            log.info("singer : " + singer);
-            log.info("member : " + member);
+            log.info("song : " + song + "/ singer : " + singer + "/ member : " + member);
 
             MelonDTO rDTO = MelonDTO.builder().song(song).singer(singer).member(member).build();
 
@@ -534,9 +483,7 @@ public class MelonMapper extends AbstractMongoDBComon implements IMelonMapper {
         String addFieldValue = CmmUtil.nvl(pDTO.addFieldValue());
 
         log.info("pColNm : " + pColNm);
-        log.info("singer : " + singer);
-        log.info("updateSinger : " + updateSinger);
-        log.info("addFieldValue : " + addFieldValue);
+        log.info("pDTO : " + pDTO);
 
         // 조회할 조건(SQL의 WHERE 역할 /  SELECT * FROM MELON_20220321 where singer ='방탄소년단')
         Document query = new Document();
@@ -590,19 +537,13 @@ public class MelonMapper extends AbstractMongoDBComon implements IMelonMapper {
         FindIterable<Document> rs = col.find(query).projection(projection);
 
         for (Document doc : rs) {
-            if (doc == null) {
-                doc = new Document();
-
-            }
 
             // MongoDB 조회 결과를 MelonDTO 저장하기 위해 변수에 저장
             String song = CmmUtil.nvl(doc.getString("song"));
             String singer = CmmUtil.nvl(doc.getString("singer"));
             String addData = CmmUtil.nvl(doc.getString("addData"));
 
-            log.info("song : " + song);
-            log.info("singer : " + singer);
-            log.info("addData : " + addData);
+            log.info("song : " + song + "/ singer : " + singer + "/ addData : " + addData);
 
             MelonDTO rDTO = MelonDTO.builder().song(song).singer(singer).addFieldValue(addData).build();
 
@@ -627,7 +568,7 @@ public class MelonMapper extends AbstractMongoDBComon implements IMelonMapper {
         String singer = CmmUtil.nvl(pDTO.singer());
 
         log.info("pColNm : " + pColNm);
-        log.info("singer : " + singer);
+        log.info("pDTO : " + pDTO);
 
         // 조회할 조건(SQL의 WHERE 역할 /  SELECT * FROM MELON_20220321 where singer ='방탄소년단')
         Document query = new Document();
@@ -639,8 +580,7 @@ public class MelonMapper extends AbstractMongoDBComon implements IMelonMapper {
 
         // 람다식 활용하여 데이터 삭제하기
         // 전체 컬렉션에 있는 데이터들을 삭제하기
-        rs.forEach(col::deleteOne);
-
+        rs.forEach(doc -> col.deleteOne(doc));
         res = 1;
 
         log.info(this.getClass().getName() + ".deleteDocument End!");

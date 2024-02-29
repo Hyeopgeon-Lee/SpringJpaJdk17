@@ -13,17 +13,19 @@
             // 버튼 클릭했을때, 발생되는 이벤트 생성함(onclick 이벤트와 동일함)
             $("#btnCollectMelonTop100").on("click", function () {
 
-                // Ajax 호출해서 멜론차트 수집하기
+                // Ajax 호출해서 MongoDB 저장하기
                 $.ajax({
-                        url: "/melon/collectMelonSong",
-                        type: "post", // 전송방식은 Post
-                        dataType: "JSON", // 전송 결과는 JSON으로 받기
-                        success: function (json) { // /melon/collectMelonSong 호출이 성공했다면..
-                            alert(json.msg);
+                    url: "/melon/v1/collectMelonSong",
+                    type: "post", // 전송방식은 Post
+                    dataType: "JSON", // 전송 결과는 JSON으로 받기
 
-                        }
+                }).then(
+                    function (json) { // 성공
+                        alert(json.data.msg); // 메시지 띄우기
+
                     }
-                )
+                );
+
             })
 
             // 버튼 클릭했을때, 발생되는 이벤트 생성함(onclick 이벤트와 동일함)
@@ -31,20 +33,26 @@
 
                 // Ajax 호출해서 멜론차트 조회하기
                 $.ajax({
-                        url: "/melon/getSongList",
-                        type: "post", // 전송방식은 Post
-                        dataType: "JSON", // 전송 결과는 JSON으로 받기
-                        success: function (json) { // /melon/getSongList 호출이 성공했다면..
-                            for (let i = 0; i < json.length; i++) {
-                                $("#melonData").append("<div class=\"divTableRow\">");
-                                $("#melonData").append("<div class=\"divTableCell\">" + json[i].song + "</div>");
-                                $("#melonData").append("<div class=\"divTableCell\">" + json[i].singer + "</div>");
-                                $("#melonData").append("</div>");
-                            }
+                    url: "/melon/v1/getSongList",
+                    type: "post", // 전송방식은 Post
+                    dataType: "JSON", // 전송 결과는 JSON으로 받기
 
+                }).then(
+                    function (json) { // 성공
+
+                        $("#melonData").empty(); // 기존 조회 내용 지우기
+
+                        const result = json.data;
+
+                        for (const data of result) {
+                            $("#melonData").append("<div class=\"divTableRow\">");
+                            $("#melonData").append("<div class=\"divTableCell\">" + data.song + "</div>");
+                            $("#melonData").append("<div class=\"divTableCell\">" + data.singer + "</div>");
+                            $("#melonData").append("</div>");
                         }
+
                     }
-                )
+                );
             })
         })
     </script>

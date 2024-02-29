@@ -15,17 +15,18 @@
 
                 // Ajax 호출해서 MongoDB 저장하기
                 $.ajax({
-                        url: "/mongo/test",
-                        type: "post", // 전송방식은 Post
-                        contentType: "application/json",
-                        dataType: "JSON", // 전송 결과는 JSON으로 받기
-                        data: JSON.stringify($("#f").serializeObject())// form 태그 내 input 등 객체를 자동으로 전송할 형태로 변경하기
-                    }
-                ).then(
+                    url: "/mongo/v1/basic",
+                    type: "post", // 전송방식은 Post
+                    contentType: "application/json",
+                    dataType: "JSON", // 전송 결과는 JSON으로 받기
+                    data: JSON.stringify($("#f").serializeObject())// form 태그 내 input 등 객체를 자동으로 전송할 형태로 변경하기
+
+                }).then(
                     function (json) { // 성공
                         alert(json.data.msg); // 메시지 띄우기
+
                     },
-                    function (json) { // 실패
+                    function (json) { // 실패(유효성 검증 에러 발생 및 시스템 오류 메시지)
                         const result = json.responseJSON.data;
 
                         console.log(result)
@@ -35,8 +36,7 @@
 
                         }
                         alert(errMsg); // 메시지 띄우기
-                    }
-                )
+                    })
             })
         })
 
