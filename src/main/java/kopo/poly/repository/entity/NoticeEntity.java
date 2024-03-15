@@ -14,6 +14,7 @@ import org.hibernate.annotations.DynamicUpdate;
 @Builder
 @Entity
 @ToString
+@Cacheable
 public class NoticeEntity {
 
     @Id
