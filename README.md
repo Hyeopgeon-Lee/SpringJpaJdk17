@@ -53,13 +53,35 @@
 
 ---
 
-### 📦 **Clone 및 실행 방법**
+## 📦 설치 및 실행 방법**
 
-1. **레포지토리 클론**
+### 1. 레포지토리 클론**
    ```bash
    git clone https://github.com/Hyeopgeon-Lee/SpringJpaJdk17Template.git
    cd SpringJpaJdk17Template
    ```
 
-2. 
+### 2. MariaDB 설정
+application.yml 또는 application.properties 파일에서 데이터베이스 설정 정보를 업데이트합니다.
+
+```yaml
+spring:
+  datasource:
+    url: jdbc:mariadb://localhost:3306/your_database
+    username: your_username
+    password: your_password
+```
+
+아래는 의존성 설치부터 시작하는 설치 및 실행 방법입니다.
+
+### 3. 의존성 설치
+아래 명령어를 실행하여 Maven 의존성을 설치합니다:
+```bash
+mvn clean install
+```
+
+### 4. 애플리케이션 실행
+```bash
+mvn spring-boot:run
+```
 
