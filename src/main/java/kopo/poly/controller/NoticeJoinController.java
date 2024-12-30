@@ -33,7 +33,7 @@ public class NoticeJoinController {
             throws Exception {
 
         // 로그 찍기(추후 찍은 로그를 통해 이 함수에 접근했는지 파악하기 용이하다.)
-        log.info(this.getClass().getName() + ".noticeListUsingJoinColumn Start!");
+        log.info("{}.noticeListUsingJoinColumn Start!", this.getClass().getName());
 
         // 로그인된 사용자 아이디는 Session에 저장함
         // 교육용으로 아직 로그인을 구현하지 않았기 때문에 Session에 데이터를 저장하지 않았음
@@ -49,7 +49,7 @@ public class NoticeJoinController {
         model.addAttribute("rList", rList);
 
         // 로그 찍기(추후 찍은 로그를 통해 이 함수 호출이 끝났는지 파악하기 용이하다.)
-        log.info(this.getClass().getName() + ".noticeList End!");
+        log.info("{}.noticeList End!", this.getClass().getName());
 
         // 함수 처리가 끝나고 보여줄 HTML (Thymeleaf) 파일명
         // templates/notice/noticeList.html
@@ -68,7 +68,7 @@ public class NoticeJoinController {
             throws Exception {
 
         // 로그 찍기(추후 찍은 로그를 통해 이 함수에 접근했는지 파악하기 용이하다.)
-        log.info(this.getClass().getName() + ".noticeListUsingNativeQuery Start!");
+        log.info("{}.noticeListUsingNativeQuery Start!", this.getClass().getName());
 
         // 로그인된 사용자 아이디는 Session에 저장함
         // 교육용으로 아직 로그인을 구현하지 않았기 때문에 Session에 데이터를 저장하지 않았음
@@ -84,7 +84,7 @@ public class NoticeJoinController {
         model.addAttribute("rList", rList);
 
         // 로그 찍기(추후 찍은 로그를 통해 이 함수 호출이 끝났는지 파악하기 용이하다.)
-        log.info(this.getClass().getName() + ".noticeListUsingNativeQuery End!");
+        log.info("{}.noticeListUsingNativeQuery End!", this.getClass().getName());
 
         // 함수 처리가 끝나고 보여줄 HTML (Thymeleaf) 파일명
         // templates/notice/noticeList.html
@@ -103,7 +103,7 @@ public class NoticeJoinController {
             throws Exception {
 
         // 로그 찍기(추후 찍은 로그를 통해 이 함수에 접근했는지 파악하기 용이하다.)
-        log.info(this.getClass().getName() + ".noticeListUsingJPQL Start!");
+        log.info("{}.noticeListUsingJPQL Start!", this.getClass().getName());
 
         // 로그인된 사용자 아이디는 Session에 저장함
         // 교육용으로 아직 로그인을 구현하지 않았기 때문에 Session에 데이터를 저장하지 않았음
@@ -119,7 +119,7 @@ public class NoticeJoinController {
         model.addAttribute("rList", rList);
 
         // 로그 찍기(추후 찍은 로그를 통해 이 함수 호출이 끝났는지 파악하기 용이하다.)
-        log.info(this.getClass().getName() + ".noticeListUsingJPQL End!");
+        log.info("{}.noticeListUsingJPQL End!", this.getClass().getName());
 
         // 함수 처리가 끝나고 보여줄 HTML (Thymeleaf) 파일명
         // templates/notice/noticeList.html
@@ -138,7 +138,7 @@ public class NoticeJoinController {
             throws Exception {
 
         // 로그 찍기(추후 찍은 로그를 통해 이 함수에 접근했는지 파악하기 용이하다.)
-        log.info(this.getClass().getName() + ".noticeListUsingQueryDSL Start!");
+        log.info("{}.noticeListUsingQueryDSL Start!", this.getClass().getName());
 
         // 로그인된 사용자 아이디는 Session에 저장함
         // 교육용으로 아직 로그인을 구현하지 않았기 때문에 Session에 데이터를 저장하지 않았음
@@ -154,7 +154,7 @@ public class NoticeJoinController {
         model.addAttribute("rList", rList);
 
         // 로그 찍기(추후 찍은 로그를 통해 이 함수 호출이 끝났는지 파악하기 용이하다.)
-        log.info(this.getClass().getName() + ".noticeListUsingQueryDSL End!");
+        log.info("{}.noticeListUsingQueryDSL End!", this.getClass().getName());
 
         // 함수 처리가 끝나고 보여줄 HTML (Thymeleaf) 파일명
         // templates/notice/noticeList.html

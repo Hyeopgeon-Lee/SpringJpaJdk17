@@ -25,7 +25,7 @@ public class MovieService implements IMovieService {
 
     private int collectMovie(String redisKey) throws Exception {
 
-        log.info(this.getClass().getName() + ".collectMovie Start!");
+        log.info("{}.collectMovie Start!", this.getClass().getName());
 
         int res = 0; //크롤링 결과 (0보다 크면 크롤링 성공)
 
@@ -65,7 +65,7 @@ public class MovieService implements IMovieService {
             res += movieMapper.insertMovie(pDTO, redisKey);
 
         }
-        log.info(this.getClass().getName() + ".collectMovie End!");
+        log.info("{}.collectMovie End!", this.getClass().getName());
 
         return res;
     }
@@ -73,7 +73,7 @@ public class MovieService implements IMovieService {
     @Override
     public List<MovieDTO> getMovieRank() throws Exception {
 
-        log.info(this.getClass().getName() + ".getMovieRank Start!");
+        log.info("{}.getMovieRank Start!", this.getClass().getName());
 
         String redisKey = "CGV_" + DateUtil.getDateTime("yyyyMMdd");
 
@@ -81,13 +81,13 @@ public class MovieService implements IMovieService {
         if (!movieMapper.getExistKey(redisKey)) {
             int res = this.collectMovie(redisKey);
 
-            log.info("수집된 영화 수 : " + res);
+            log.info("수집된 영화 수 : {}", res);
         }
 
         // 수집된 정보에서 가져오기
         List<MovieDTO> rList = movieMapper.getMovieList(redisKey);
 
-        log.info(this.getClass().getName() + ".getMovieRank End!");
+        log.info("{}.getMovieRank End!", this.getClass().getName());
 
         return rList;
     }

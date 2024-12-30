@@ -32,7 +32,7 @@ public class MovieController {
     @PostMapping(value = "speechcommand")
     public ResponseEntity getMovie(@Valid @RequestBody MovieDTO pDTO, BindingResult bindingResult) throws Exception {
 
-        log.info(this.getClass().getName() + ".getMovie start!");
+        log.info("{}.getMovie start!", this.getClass().getName());
 
         if (bindingResult.hasErrors()) { // Spring Validation 맞춰 잘 바인딩되었는지 체크
             return CommonResponse.getErrors(bindingResult); // 유효성 검증 결과에 따른 에러 메시지 전달
@@ -41,7 +41,7 @@ public class MovieController {
 
         List<MovieDTO> rList = null;
 
-        log.info("pDTO : " + pDTO);
+        log.info("pDTO : {}", pDTO);
 
         // 영화와 비슷한 단어가 존재하면 CGV 영화 순위 가져오기 수행
         if ((pDTO.speechCommand().contains("영화")) || (pDTO.speechCommand().contains("영하"))
@@ -52,7 +52,7 @@ public class MovieController {
 
         }
 
-        log.info(this.getClass().getName() + ".getMovie end!");
+        log.info("{}.getMovie end!", this.getClass().getName());
 
         return ResponseEntity.ok(
                 CommonResponse.of(HttpStatus.OK, HttpStatus.OK.series().name(), rList));

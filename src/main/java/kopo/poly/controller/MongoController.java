@@ -26,17 +26,17 @@ public class MongoController {
     @PostMapping(value = "basic")
     public ResponseEntity basic(@Valid @RequestBody MongoDTO pDTO, BindingResult bindingResult) throws Exception {
 
-        log.info(this.getClass().getName() + ".basic Start!");
+        log.info("{}.basic Start!", this.getClass().getName());
 
         if (bindingResult.hasErrors()) { // Spring Validation 맞춰 잘 바인딩되었는지 체크
             return CommonResponse.getErrors(bindingResult); // 유효성 검증 결과에 따른 에러 메시지 전달
 
         }
 
-        String msg = ""; // 저장 결과 메시지
+        String msg; // 저장 결과 메시지
 
 
-        log.info("pDTO : " + pDTO); // 입력 받은 값 확인하기
+        log.info("pDTO : {}", pDTO); // 입력 받은 값 확인하기
 
         int res = mongoService.mongoTest(pDTO);
 
@@ -50,7 +50,7 @@ public class MongoController {
 
         MsgDTO dto = MsgDTO.builder().result(res).msg(msg).build();
 
-        log.info(this.getClass().getName() + ".basic End!");
+        log.info("{}.basic End!", this.getClass().getName());
 
         return ResponseEntity.ok(
                 CommonResponse.of(HttpStatus.OK, HttpStatus.OK.series().name(), dto));

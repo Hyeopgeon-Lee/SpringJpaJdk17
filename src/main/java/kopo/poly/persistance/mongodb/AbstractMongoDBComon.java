@@ -41,7 +41,7 @@ public abstract class AbstractMongoDBComon {
      */
     protected boolean createCollection(MongoTemplate mongodb, String colNm, String[] index) {
 
-        log.info(this.getClass().getName() + ".createCollection Start!");
+        log.info("{}.createCollection Start!", this.getClass().getName());
 
         boolean res = false;
 
@@ -65,7 +65,7 @@ public abstract class AbstractMongoDBComon {
             res = true;
         }
 
-        log.info(this.getClass().getName() + ".createCollection End!");
+        log.info("{}.createCollection End!", this.getClass().getName());
 
         return res;
 

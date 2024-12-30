@@ -19,13 +19,13 @@ public class MyRedisService implements IMyRedisService {
 
     @Override
     public RedisDTO saveString(RedisDTO pDTO) throws Exception {
-        log.info(this.getClass().getName() + ".saveString Start!");
+        log.info("{}.saveString Start!", this.getClass().getName());
 
         // 저장할 RedisDB 키
         String redisKey = "myRedis_String";
 
         // 저장 결과
-        RedisDTO rDTO = null;
+        RedisDTO rDTO;
 
         int res = myRedisMapper.saveString(redisKey, pDTO);
 
@@ -34,24 +34,24 @@ public class MyRedisService implements IMyRedisService {
 
         } else {
             log.info("Redis 저장 실패!!");
-            new Exception("Redis 저장 실패!!");
+            throw new Exception("Redis 저장 실패!!");
 
         }
 
-        log.info(this.getClass().getName() + ".saveString End!");
+        log.info("{}.saveString End!", this.getClass().getName());
 
         return rDTO;
     }
 
     @Override
     public RedisDTO saveStringJSON(RedisDTO pDTO) throws Exception {
-        log.info(this.getClass().getName() + ".saveStringJSON Start!");
+        log.info("{}.saveStringJSON Start!", this.getClass().getName());
 
         // 저장할 RedisDB 키
         String redisKey = "myRedis_String_JSON";
 
         // 저장 결과
-        RedisDTO rDTO = null;
+        RedisDTO rDTO;
 
         int res = myRedisMapper.saveStringJSON(redisKey, pDTO);
 
@@ -60,10 +60,10 @@ public class MyRedisService implements IMyRedisService {
 
         } else {
             log.info("Redis 저장 실패!!");
-            new Exception("Redis 저장 실패!!");
+            throw new Exception("Redis 저장 실패!!");
 
         }
-        log.info(this.getClass().getName() + ".saveStringJSON End!");
+        log.info("{}.saveStringJSON End!", this.getClass().getName());
 
         return rDTO;
     }
@@ -71,13 +71,13 @@ public class MyRedisService implements IMyRedisService {
     @Override
     public List<String> saveList(List<RedisDTO> pList) throws Exception {
 
-        log.info(this.getClass().getName() + ".saveList Start!");
+        log.info("{}.saveList Start!", this.getClass().getName());
 
         // 저장할 RedisDB 키
         String redisKey = "myRedis_List";
 
         // 저장 결과
-        List<String> rList = null;
+        List<String> rList;
 
         int res = myRedisMapper.saveList(redisKey, pList);
 
@@ -86,11 +86,11 @@ public class MyRedisService implements IMyRedisService {
 
         } else {
             log.info("Redis 저장 실패!!");
-            new Exception("Redis 저장 실패!!");
+            throw new Exception("Redis 저장 실패!!");
 
         }
 
-        log.info(this.getClass().getName() + ".saveList End!");
+        log.info("{}.saveList End!", this.getClass().getName());
 
         return rList;
     }
@@ -98,13 +98,13 @@ public class MyRedisService implements IMyRedisService {
     @Override
     public List<RedisDTO> saveListJSON(List<RedisDTO> pList) throws Exception {
 
-        log.info(this.getClass().getName() + ".saveListJSON Start!");
+        log.info("{}.saveListJSON Start!", this.getClass().getName());
 
         // 저장할 RedisDB 키
         String redisKey = "myRedis_List_JSON";
 
         // 저장 결과
-        List<RedisDTO> rList = null;
+        List<RedisDTO> rList;
 
         int res = myRedisMapper.saveListJSON(redisKey, pList);
 
@@ -113,11 +113,11 @@ public class MyRedisService implements IMyRedisService {
 
         } else {
             log.info("Redis 저장 실패!!");
-            new Exception("Redis 저장 실패!!");
+            throw new Exception("Redis 저장 실패!!");
 
         }
 
-        log.info(this.getClass().getName() + ".saveListJSON End!");
+        log.info("{}.saveListJSON End!", this.getClass().getName());
 
         return rList;
     }
@@ -125,13 +125,13 @@ public class MyRedisService implements IMyRedisService {
     @Override
     public RedisDTO saveHash(RedisDTO pDTO) throws Exception {
 
-        log.info(this.getClass().getName() + ".saveHash Start!");
+        log.info("{}.saveHash Start!", this.getClass().getName());
 
         // 저장할 RedisDB 키
         String redisKey = "myRedis_Hash";
 
         // 저장 결과
-        RedisDTO rDTO = null;
+        RedisDTO rDTO;
 
         int res = myRedisMapper.saveHash(redisKey, pDTO);
 
@@ -140,11 +140,11 @@ public class MyRedisService implements IMyRedisService {
 
         } else {
             log.info("Redis 저장 실패!!");
-            new Exception("Redis 저장 실패!!");
+            throw new Exception("Redis 저장 실패!!");
 
         }
 
-        log.info(this.getClass().getName() + ".saveHash End!");
+        log.info("{}.saveHash End!", this.getClass().getName());
 
         return rDTO;
     }
@@ -152,13 +152,13 @@ public class MyRedisService implements IMyRedisService {
     @Override
     public Set<RedisDTO> saveSetJSON(List<RedisDTO> pList) throws Exception {
 
-        log.info(this.getClass().getName() + ".saveSetJSON Start!");
+        log.info("{}.saveSetJSON Start!", this.getClass().getName());
 
         // 저장할 RedisDB 키
         String redisKey = "myRedis_Set_JSON";
 
         // 저장 결과
-        Set<RedisDTO> rSet = null;
+        Set<RedisDTO> rSet;
 
         int res = myRedisMapper.saveSetJSON(redisKey, pList);
 
@@ -167,11 +167,11 @@ public class MyRedisService implements IMyRedisService {
 
         } else {
             log.info("Redis 저장 실패!!");
-            new Exception("Redis 저장 실패!!");
+            throw new Exception("Redis 저장 실패!!");
 
         }
 
-        log.info(this.getClass().getName() + ".saveSetJSON End!");
+        log.info("{}.saveSetJSON End!", this.getClass().getName());
 
         return rSet;
     }
@@ -179,13 +179,13 @@ public class MyRedisService implements IMyRedisService {
     @Override
     public Set<RedisDTO> saveZSetJSON(List<RedisDTO> pList) throws Exception {
 
-        log.info(this.getClass().getName() + ".saveZSetJSON Start!");
+        log.info("{}.saveZSetJSON Start!", this.getClass().getName());
 
         // 저장할 RedisDB 키
         String redisKey = "myRedis_ZSet_JSON";
 
         // 저장 결과
-        Set<RedisDTO> rSet = null;
+        Set<RedisDTO> rSet;
 
         int res = myRedisMapper.saveZSetJSON(redisKey, pList);
 
@@ -194,11 +194,11 @@ public class MyRedisService implements IMyRedisService {
 
         } else {
             log.info("Redis 저장 실패!!");
-            new Exception("Redis 저장 실패!!");
+            throw new Exception("Redis 저장 실패!!");
 
         }
 
-        log.info(this.getClass().getName() + ".saveZSetJSON End!");
+        log.info("{}.saveZSetJSON End!", this.getClass().getName());
 
         return rSet;
     }

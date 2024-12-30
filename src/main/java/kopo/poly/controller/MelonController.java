@@ -31,10 +31,10 @@ public class MelonController {
     @PostMapping(value = "collectMelonSong")
     public ResponseEntity collectMelonSong() throws Exception {
 
-        log.info(this.getClass().getName() + ".collectMelonSong Start!");
+        log.info("{}.collectMelonSong Start!", this.getClass().getName());
 
         // 수집 결과 출력
-        String msg = "";
+        String msg;
 
         int res = melonService.collectMelonSong();
 
@@ -47,7 +47,7 @@ public class MelonController {
 
         MsgDTO dto = MsgDTO.builder().result(res).msg(msg).build();
 
-        log.info(this.getClass().getName() + ".collectMelonSong End!");
+        log.info("{}.collectMelonSong End!", this.getClass().getName());
 
         return ResponseEntity.ok(
                 CommonResponse.of(HttpStatus.OK, HttpStatus.OK.series().name(), dto));
@@ -59,13 +59,13 @@ public class MelonController {
     @PostMapping(value = "getSongList")
     public ResponseEntity getSongList() throws Exception {
 
-        log.info(this.getClass().getName() + ".getSongList Start!");
+        log.info("{}.getSongList Start!", this.getClass().getName());
 
         // Java 8부터 제공되는 Optional 활용하여 NPE(Null Pointer Exception) 처리
         List<MelonDTO> rList = Optional.ofNullable(melonService.getSongList())
                 .orElseGet(ArrayList::new);
 
-        log.info(this.getClass().getName() + ".getSongList End!");
+        log.info("{}.getSongList End!", this.getClass().getName());
 
         return ResponseEntity.ok(
                 CommonResponse.of(HttpStatus.OK, HttpStatus.OK.series().name(), rList));
@@ -78,13 +78,13 @@ public class MelonController {
     public ResponseEntity getSingerSongCnt()
             throws Exception {
 
-        log.info(this.getClass().getName() + ".getSingerSongCnt Start!");
+        log.info("{}.getSingerSongCnt Start!", this.getClass().getName());
 
         // Java 8부터 제공되는 Optional 활용하여 NPE(Null Pointer Exception) 처리
         List<MelonDTO> rList = Optional.ofNullable(melonService.getSingerSongCnt())
                 .orElseGet(ArrayList::new);
 
-        log.info(this.getClass().getName() + ".getSingerSongCnt End!");
+        log.info("{}.getSingerSongCnt End!", this.getClass().getName());
 
         return ResponseEntity.ok(
                 CommonResponse.of(HttpStatus.OK, HttpStatus.OK.series().name(), rList));
@@ -96,15 +96,15 @@ public class MelonController {
     @PostMapping(value = "getSingerSong")
     public ResponseEntity getSingerSong(@RequestBody MelonDTO pDTO) throws Exception {
 
-        log.info(this.getClass().getName() + ".getSingerSong Start!");
+        log.info("{}.getSingerSong Start!", this.getClass().getName());
 
-        log.info("pDTO :" + pDTO); // JSON 구조로 받은 값이 잘 받았는지 확인하기 위해 로그 찍기
+        log.info("pDTO :{}", pDTO); // JSON 구조로 받은 값이 잘 받았는지 확인하기 위해 로그 찍기
 
         // Java 8부터 제공되는 Optional 활용하여 NPE(Null Pointer Exception) 처리
         List<MelonDTO> rList = Optional.ofNullable(melonService.getSingerSong(pDTO))
                 .orElseGet(ArrayList::new);
 
-        log.info(this.getClass().getName() + ".getSingerSong End!");
+        log.info("{}.getSingerSong End!", this.getClass().getName());
 
         return ResponseEntity.ok(
                 CommonResponse.of(HttpStatus.OK, HttpStatus.OK.series().name(), rList));
@@ -117,10 +117,10 @@ public class MelonController {
     @PostMapping(value = "dropCollection")
     public ResponseEntity dropCollection() throws Exception {
 
-        log.info(this.getClass().getName() + ".dropCollection Start!");
+        log.info("{}.dropCollection Start!", this.getClass().getName());
 
         // 삭제 결과 출력
-        String msg = "";
+        String msg;
 
         int res = melonService.dropCollection();
 
@@ -133,7 +133,7 @@ public class MelonController {
 
         MsgDTO dto = MsgDTO.builder().result(res).msg(msg).build();
 
-        log.info(this.getClass().getName() + ".dropCollection End!");
+        log.info("{}.dropCollection End!", this.getClass().getName());
 
         return ResponseEntity.ok(
                 CommonResponse.of(HttpStatus.OK, HttpStatus.OK.series().name(), dto));
@@ -145,13 +145,13 @@ public class MelonController {
     @PostMapping(value = "insertManyField")
     public ResponseEntity insertManyField() throws Exception {
 
-        log.info(this.getClass().getName() + ".insertManyField Start!");
+        log.info("{}.insertManyField Start!", this.getClass().getName());
 
         // Java 8부터 제공되는 Optional 활용하여 NPE(Null Pointer Exception) 처리
         List<MelonDTO> rList = Optional.ofNullable(melonService.insertManyField())
                 .orElseGet(ArrayList::new);
 
-        log.info(this.getClass().getName() + ".insertManyField End!");
+        log.info("{}.insertManyField End!", this.getClass().getName());
 
         return ResponseEntity.ok(
                 CommonResponse.of(HttpStatus.OK, HttpStatus.OK.series().name(), rList));
@@ -164,15 +164,15 @@ public class MelonController {
     @PostMapping(value = "updateField")
     public ResponseEntity updateField(@RequestBody MelonDTO pDTO) throws Exception {
 
-        log.info(this.getClass().getName() + ".updateField Start!");
+        log.info("{}.updateField Start!", this.getClass().getName());
 
-        log.info("pDTO :" + pDTO); // JSON 구조로 받은 값이 잘 받았는지 확인하기 위해 로그 찍기
+        log.info("pDTO :{}", pDTO); // JSON 구조로 받은 값이 잘 받았는지 확인하기 위해 로그 찍기
 
         // Java 8부터 제공되는 Optional 활용하여 NPE(Null Pointer Exception) 처리
         List<MelonDTO> rList = Optional.ofNullable(melonService.updateField(pDTO))
                 .orElseGet(ArrayList::new);
 
-        log.info(this.getClass().getName() + ".updateField End!");
+        log.info("{}.updateField End!", this.getClass().getName());
 
         return ResponseEntity.ok(
                 CommonResponse.of(HttpStatus.OK, HttpStatus.OK.series().name(), rList));
@@ -185,15 +185,15 @@ public class MelonController {
     @PostMapping(value = "updateAddField")
     public ResponseEntity updateAddField(@RequestBody MelonDTO pDTO) throws Exception {
 
-        log.info(this.getClass().getName() + ".updateAddField Start!");
+        log.info("{}.updateAddField Start!", this.getClass().getName());
 
-        log.info("pDTO :" + pDTO); // JSON 구조로 받은 값이 잘 받았는지 확인하기 위해 로그 찍기
+        log.info("pDTO :{}", pDTO); // JSON 구조로 받은 값이 잘 받았는지 확인하기 위해 로그 찍기
 
         // Java 8부터 제공되는 Optional 활용하여 NPE(Null Pointer Exception) 처리
         List<MelonDTO> rList = Optional.ofNullable(melonService.updateAddField(pDTO))
                 .orElseGet(ArrayList::new);
 
-        log.info(this.getClass().getName() + ".updateAddField End!");
+        log.info("{}.updateAddField End!", this.getClass().getName());
 
         return ResponseEntity.ok(
                 CommonResponse.of(HttpStatus.OK, HttpStatus.OK.series().name(), rList));
@@ -205,15 +205,15 @@ public class MelonController {
     @PostMapping(value = "updateAddListField")
     public ResponseEntity updateAddListField(@RequestBody MelonDTO pDTO) throws Exception {
 
-        log.info(this.getClass().getName() + ".updateAddListField Start!");
+        log.info("{}.updateAddListField Start!", this.getClass().getName());
 
-        log.info("pDTO :" + pDTO); // JSON 구조로 받은 값이 잘 받았는지 확인하기 위해 로그 찍기
+        log.info("pDTO :{}", pDTO); // JSON 구조로 받은 값이 잘 받았는지 확인하기 위해 로그 찍기
 
         // Java 8부터 제공되는 Optional 활용하여 NPE(Null Pointer Exception) 처리
         List<MelonDTO> rList = Optional.ofNullable(melonService.updateAddListField(pDTO))
                 .orElseGet(ArrayList::new);
 
-        log.info(this.getClass().getName() + ".updateAddListField End!");
+        log.info("{}.updateAddListField End!", this.getClass().getName());
 
         return ResponseEntity.ok(
                 CommonResponse.of(HttpStatus.OK, HttpStatus.OK.series().name(), rList));
@@ -225,15 +225,15 @@ public class MelonController {
     @PostMapping(value = "updateFieldAndAddField")
     public ResponseEntity updateFieldAndAddField(@RequestBody MelonDTO pDTO) throws Exception {
 
-        log.info(this.getClass().getName() + ".updateFieldAndAddField Start!");
+        log.info("{}.updateFieldAndAddField Start!", this.getClass().getName());
 
-        log.info("pDTO :" + pDTO); // JSON 구조로 받은 값이 잘 받았는지 확인하기 위해 로그 찍기
+        log.info("pDTO :{}", pDTO); // JSON 구조로 받은 값이 잘 받았는지 확인하기 위해 로그 찍기
 
         // Java 8부터 제공되는 Optional 활용하여 NPE(Null Pointer Exception) 처리
         List<MelonDTO> rList = Optional.ofNullable(melonService.updateFieldAndAddField(pDTO))
                 .orElseGet(ArrayList::new);
 
-        log.info(this.getClass().getName() + ".updateFieldAndAddField End!");
+        log.info("{}.updateFieldAndAddField End!", this.getClass().getName());
 
         return ResponseEntity.ok(
                 CommonResponse.of(HttpStatus.OK, HttpStatus.OK.series().name(), rList));
@@ -245,15 +245,15 @@ public class MelonController {
     @PostMapping(value = "deleteDocument")
     public ResponseEntity deleteDocument(@RequestBody MelonDTO pDTO) throws Exception {
 
-        log.info(this.getClass().getName() + ".deleteDocument Start!");
+        log.info("{}.deleteDocument Start!", this.getClass().getName());
 
-        log.info("pDTO :" + pDTO); // JSON 구조로 받은 값이 잘 받았는지 확인하기 위해 로그 찍기
+        log.info("pDTO :{}", pDTO); // JSON 구조로 받은 값이 잘 받았는지 확인하기 위해 로그 찍기
 
         // Java 8부터 제공되는 Optional 활용하여 NPE(Null Pointer Exception) 처리
         List<MelonDTO> rList = Optional.ofNullable(melonService.deleteDocument(pDTO))
                 .orElseGet(ArrayList::new);
 
-        log.info(this.getClass().getName() + ".deleteDocument End!");
+        log.info("{}.deleteDocument End!", this.getClass().getName());
 
         return ResponseEntity.ok(
                 CommonResponse.of(HttpStatus.OK, HttpStatus.OK.series().name(), rList));

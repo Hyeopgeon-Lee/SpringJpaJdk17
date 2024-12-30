@@ -31,7 +31,7 @@ public class MelonService implements IMelonService {
      */
     private List<MelonDTO> doCollect() throws Exception {
 
-        log.info(this.getClass().getName() + ".doCollect Start!");
+        log.info("{}.doCollect Start!", this.getClass().getName());
 
         List<MelonDTO> pList = new LinkedList<>();
 
@@ -51,8 +51,8 @@ public class MelonService implements IMelonService {
             String song = CmmUtil.nvl(songInfo.select("div.ellipsis.rank01 a").text()); // 노래
             String singer = CmmUtil.nvl(songInfo.select("div.ellipsis.rank02 a").eq(0).text()); // 가수
 
-            log.info("song : " + song);
-            log.info("singer : " + singer);
+            log.info("song : {}", song);
+            log.info("singer : {}", singer);
 
             // 가수와 노래 정보가 모두 수집되었다면, 저장함
             if ((!song.isEmpty()) && (!singer.isEmpty())) {
@@ -66,7 +66,7 @@ public class MelonService implements IMelonService {
             }
         }
 
-        log.info(this.getClass().getName() + ".doCollect End!");
+        log.info("{}.doCollect End!", this.getClass().getName());
 
         return pList;
 
@@ -76,7 +76,7 @@ public class MelonService implements IMelonService {
     @Override
     public int collectMelonSong() throws Exception {
 
-        int res = 0;
+        int res;
 
         // 생성할 컬렉션명
         String colNm = "MELON_" + DateUtil.getDateTime("yyyyMMdd");
@@ -93,7 +93,7 @@ public class MelonService implements IMelonService {
         }
 
         // 로그 찍기(추후 찍은 로그를 통해 이 함수에 접근했는지 파악하기 용이하다.)
-        log.info(this.getClass().getName() + ".collectMelonSong End!");
+        log.info("{}.collectMelonSong End!", this.getClass().getName());
 
         return res;
     }
@@ -101,7 +101,7 @@ public class MelonService implements IMelonService {
     @Override
     public List<MelonDTO> getSongList() throws Exception {
 
-        log.info(this.getClass().getName() + ".getSongList Start!");
+        log.info("{}.getSongList Start!", this.getClass().getName());
 
         // MongoDB에 저장된 컬렉션 이름
         String colNm = "MELON_" + DateUtil.getDateTime("yyyyMMdd");
@@ -116,7 +116,7 @@ public class MelonService implements IMelonService {
 
         }
 
-        log.info(this.getClass().getName() + ".getSongList End!");
+        log.info("{}.getSongList End!", this.getClass().getName());
 
         return rList;
     }
@@ -124,13 +124,13 @@ public class MelonService implements IMelonService {
     @Override
     public List<MelonDTO> getSingerSongCnt() throws Exception {
 
-        log.info(this.getClass().getName() + ".getSingerSongCnt Start!");
+        log.info("{}.getSingerSongCnt Start!", this.getClass().getName());
 
         String colNm = "MELON_" + DateUtil.getDateTime("yyyyMMdd");
 
         List<MelonDTO> rList = melonMapper.getSingerSongCnt(colNm);
 
-        log.info(this.getClass().getName() + ".getSingerSongCnt End!");
+        log.info("{}.getSingerSongCnt End!", this.getClass().getName());
 
         return rList;
     }
@@ -138,9 +138,9 @@ public class MelonService implements IMelonService {
     @Override
     public int dropCollection() throws Exception {
 
-        log.info(this.getClass().getName() + ".dropCollection Start!");
+        log.info("{}.dropCollection Start!", this.getClass().getName());
 
-        int res = 0;
+        int res;
 
         // MongoDB에 저장된 컬렉션 이름
         String colNm = "MELON_" + DateUtil.getDateTime("yyyyMMdd");
@@ -148,7 +148,7 @@ public class MelonService implements IMelonService {
         // 기존 수집된 멜론Top100 수집한 컬렉션 삭제하기
         res = melonMapper.dropCollection(colNm);
 
-        log.info(this.getClass().getName() + ".dropCollection End!");
+        log.info("{}.dropCollection End!", this.getClass().getName());
 
         return res;
     }
@@ -156,7 +156,7 @@ public class MelonService implements IMelonService {
     @Override
     public List<MelonDTO> getSingerSong(MelonDTO pDTO) throws Exception {
 
-        log.info(this.getClass().getName() + ".getSingerSong Start!");
+        log.info("{}.getSingerSong Start!", this.getClass().getName());
 
         // MongoDB에 저장된 컬렉션 이름
         String colNm = "MELON_" + DateUtil.getDateTime("yyyyMMdd");
@@ -172,7 +172,7 @@ public class MelonService implements IMelonService {
 
         }
 
-        log.info(this.getClass().getName() + ".getSingerSong End!");
+        log.info("{}.getSingerSong End!", this.getClass().getName());
 
         return rList;
     }
@@ -182,7 +182,7 @@ public class MelonService implements IMelonService {
     public List<MelonDTO> insertManyField() throws Exception {
 
         // 로그 찍기(추후 찍은 로그를 통해 이 함수에 접근했는지 파악하기 용이하다.)
-        log.info(this.getClass().getName() + ".insertManyField Start!");
+        log.info("{}.insertManyField Start!", this.getClass().getName());
 
         List<MelonDTO> rList = null; // 변경된 데이터 조회 결과
 
@@ -198,7 +198,7 @@ public class MelonService implements IMelonService {
         }
 
         // 로그 찍기(추후 찍은 로그를 통해 이 함수에 접근했는지 파악하기 용이하다.)
-        log.info(this.getClass().getName() + ".insertManyField End!");
+        log.info("{}.insertManyField End!", this.getClass().getName());
 
         return rList;
     }
@@ -207,7 +207,7 @@ public class MelonService implements IMelonService {
     public List<MelonDTO> updateField(MelonDTO pDTO) throws Exception {
 
         // 로그 찍기(추후 찍은 로그를 통해 이 함수에 접근했는지 파악하기 용이하다.)
-        log.info(this.getClass().getName() + ".updateField Start!");
+        log.info("{}.updateField Start!", this.getClass().getName());
 
         List<MelonDTO> rList = null; // 변경된 데이터 조회 결과
 
@@ -230,7 +230,7 @@ public class MelonService implements IMelonService {
         }
 
         // 로그 찍기(추후 찍은 로그를 통해 이 함수에 접근했는지 파악하기 용이하다.)
-        log.info(this.getClass().getName() + ".updateField End!");
+        log.info("{}.updateField End!", this.getClass().getName());
 
         return rList;
     }
@@ -240,7 +240,7 @@ public class MelonService implements IMelonService {
     public List<MelonDTO> updateAddField(MelonDTO pDTO) throws Exception {
 
         // 로그 찍기(추후 찍은 로그를 통해 이 함수에 접근했는지 파악하기 용이하다.)
-        log.info(this.getClass().getName() + ".updateAddField Start!");
+        log.info("{}.updateAddField Start!", this.getClass().getName());
 
         List<MelonDTO> rList = null; // 변경된 데이터 조회 결과
 
@@ -263,7 +263,7 @@ public class MelonService implements IMelonService {
         }
 
         // 로그 찍기(추후 찍은 로그를 통해 이 함수에 접근했는지 파악하기 용이하다.)
-        log.info(this.getClass().getName() + ".updateAddField End!");
+        log.info("{}.updateAddField End!", this.getClass().getName());
 
         return rList;
     }
@@ -272,7 +272,7 @@ public class MelonService implements IMelonService {
     public List<MelonDTO> updateAddListField(MelonDTO pDTO) throws Exception {
 
         // 로그 찍기(추후 찍은 로그를 통해 이 함수에 접근했는지 파악하기 용이하다.)
-        log.info(this.getClass().getName() + ".updateAddListField Start!");
+        log.info("{}.updateAddListField Start!", this.getClass().getName());
 
         List<MelonDTO> rList = null; // 변경된 데이터 조회 결과
 
@@ -295,7 +295,7 @@ public class MelonService implements IMelonService {
         }
 
         // 로그 찍기(추후 찍은 로그를 통해 이 함수에 접근했는지 파악하기 용이하다.)
-        log.info(this.getClass().getName() + ".updateAddListField End!");
+        log.info("{}.updateAddListField End!", this.getClass().getName());
 
         return rList;
     }
@@ -303,7 +303,7 @@ public class MelonService implements IMelonService {
     @Override
     public List<MelonDTO> updateFieldAndAddField(MelonDTO pDTO) throws Exception {
         // 로그 찍기(추후 찍은 로그를 통해 이 함수에 접근했는지 파악하기 용이하다.)
-        log.info(this.getClass().getName() + ".updateFieldAndAddField Start!");
+        log.info("{}.updateFieldAndAddField Start!", this.getClass().getName());
 
         List<MelonDTO> rList = null; // 변경된 데이터 조회 결과
 
@@ -326,7 +326,7 @@ public class MelonService implements IMelonService {
         }
 
         // 로그 찍기(추후 찍은 로그를 통해 이 함수에 접근했는지 파악하기 용이하다.)
-        log.info(this.getClass().getName() + ".updateFieldAndAddField End!");
+        log.info("{}.updateFieldAndAddField End!", this.getClass().getName());
 
         return rList;
     }
@@ -335,7 +335,7 @@ public class MelonService implements IMelonService {
     public List<MelonDTO> deleteDocument(MelonDTO pDTO) throws Exception {
 
         // 로그 찍기(추후 찍은 로그를 통해 이 함수에 접근했는지 파악하기 용이하다.)
-        log.info(this.getClass().getName() + ".deleteDocument Start!");
+        log.info("{}.deleteDocument Start!", this.getClass().getName());
 
         List<MelonDTO> rList = null; // 변경된 데이터 조회 결과
 
@@ -358,7 +358,7 @@ public class MelonService implements IMelonService {
 
         }
         // 로그 찍기(추후 찍은 로그를 통해 이 함수에 접근했는지 파악하기 용이하다.)
-        log.info(this.getClass().getName() + ".deleteDocument End!");
+        log.info("{}.deleteDocument End!", this.getClass().getName());
 
         return rList;
     }

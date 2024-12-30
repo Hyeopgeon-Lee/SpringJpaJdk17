@@ -2,6 +2,7 @@ package kopo.poly.persistance.redis.impl;
 
 import kopo.poly.dto.MovieDTO;
 import kopo.poly.persistance.redis.IMovieMapper;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -24,14 +25,14 @@ public class MovieMapper implements IMovieMapper {
      *
      * @param redisKey 저장된 키 이름
      */
-    private void setTimeOutHour(String redisKey) throws Exception {
-        log.info(this.getClass().getName() + ".setTimeOutHour Start!");
+    private void setTimeOutHour(@NonNull String redisKey) throws Exception {
+        log.info("{}.setTimeOutHour Start!", this.getClass().getName());
         redisDB.expire(redisKey, 1, TimeUnit.HOURS);
     }
 
     @Override
-    public int insertMovie(MovieDTO pDTO, String redisKey) throws Exception {
-        log.info(this.getClass().getName() + ".insertMovie Start!");
+    public int insertMovie(@NonNull MovieDTO pDTO, @NonNull String redisKey) throws Exception {
+        log.info("{}.insertMovie Start!", this.getClass().getName());
 
         int res;
 
@@ -49,20 +50,20 @@ public class MovieMapper implements IMovieMapper {
 
         res = 1;
 
-        log.info(this.getClass().getName() + ".insertMovie End!");
+        log.info("{}.insertMovie End!", this.getClass().getName());
 
         return res;
     }
 
     @Override
-    public boolean getExistKey(String redisKey) throws Exception {
-        log.info(this.getClass().getName() + ".getExistKey Start!");
-        return redisDB.hasKey(redisKey);
+    public boolean getExistKey(@NonNull String redisKey) throws Exception {
+        log.info("{}.getExistKey Start!", this.getClass().getName());
+        return Boolean.TRUE.equals(redisDB.hasKey(redisKey));
     }
 
     @Override
-    public List<MovieDTO> getMovieList(String redisKey) throws Exception {
-        log.info(this.getClass().getName() + ".getMovieList Start!");
+    public List<MovieDTO> getMovieList(@NonNull String redisKey) throws Exception {
+        log.info("{}.getMovieList Start!", this.getClass().getName());
 
         // 결과 값 저장할 객체
         List<MovieDTO> rList = null;
@@ -73,7 +74,7 @@ public class MovieMapper implements IMovieMapper {
         // RedisDTO에 저장된 데이터를 자동으로 JSON으로 변경하기
         redisDB.setValueSerializer(new Jackson2JsonRedisSerializer<>(MovieDTO.class));
 
-        if (redisDB.hasKey(redisKey)) {
+        if (Boolean.TRUE.equals(redisDB.hasKey(redisKey))) {
             rList = (List) redisDB.opsForList().range(redisKey, 0, -1);
 
             // 데이터 유효시간 1시간 연장하기
@@ -81,7 +82,7 @@ public class MovieMapper implements IMovieMapper {
 
         }
 
-        log.info(this.getClass().getName() + ".getMovieList End!");
+        log.info("{}.getMovieList End!", this.getClass().getName());
 
         return rList;
     }

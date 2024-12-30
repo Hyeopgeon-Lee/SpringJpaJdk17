@@ -28,7 +28,8 @@ public class NoticeService implements INoticeService {
     @Override
     public List<NoticeDTO> getNoticeList() {
 
-        log.info(this.getClass().getName() + ".getNoticeList Start!");
+        log.
+                info("{}.getNoticeList Start!", this.getClass().getName());
 
         // 공지사항 전체 리스트 조회하기
         List<NoticeEntity> rList = noticeRepository.findAllByOrderByNoticeSeqDesc();
@@ -38,7 +39,7 @@ public class NoticeService implements INoticeService {
                 new TypeReference<>() {
                 });
 
-        log.info(this.getClass().getName() + ".getNoticeList End!");
+        log.info("{}.getNoticeList End!", this.getClass().getName());
 
         return nList;
     }
@@ -47,14 +48,15 @@ public class NoticeService implements INoticeService {
     @Override
     public NoticeDTO getNoticeInfo(NoticeDTO pDTO, boolean type) {
 
-        log.info(this.getClass().getName() + ".getNoticeInfo Start!");
+        log.info("{}.getNoticeInfo Start!", this.getClass().getName());
 
         if (type) {
             // 조회수 증가하기
             int res = noticeRepository.updateReadCnt(pDTO.noticeSeq());
 
             // 조회수 증가 성공여부 체크
-            log.info("res : " + res);
+            log.
+                    info("res : {}", res);
         }
 
         // 공지사항 상세내역 가져오기
@@ -63,7 +65,8 @@ public class NoticeService implements INoticeService {
         // 엔티티의 값들을 DTO에 맞게 넣어주기
         NoticeDTO rDTO = new ObjectMapper().convertValue(rEntity, NoticeDTO.class);
 
-        log.info(this.getClass().getName() + ".getNoticeInfo End!");
+        log.
+                info("{}.getNoticeInfo End!", this.getClass().getName());
 
         return rDTO;
     }
@@ -72,7 +75,7 @@ public class NoticeService implements INoticeService {
     @Override
     public void updateNoticeInfo(NoticeDTO pDTO) {
 
-        log.info(this.getClass().getName() + ".updateNoticeInfo Start!");
+        log.info("{}.updateNoticeInfo Start!", this.getClass().getName());
 
         Long noticeSeq = pDTO.noticeSeq();
 
@@ -81,11 +84,7 @@ public class NoticeService implements INoticeService {
         String contents = CmmUtil.nvl(pDTO.contents());
         String userId = CmmUtil.nvl(pDTO.userId());
 
-        log.info("noticeSeq : " + noticeSeq);
-        log.info("title : " + title);
-        log.info("noticeYn : " + noticeYn);
-        log.info("contents : " + contents);
-        log.info("userId : " + userId);
+        log.info("title: {}, noticeYn: {}, contents: {}, userId: {}", title, noticeYn, contents, userId);
 
         // 현재 공지사항 조회수 가져오기
         NoticeEntity rEntity = noticeRepository.findByNoticeSeq(noticeSeq);
@@ -99,40 +98,37 @@ public class NoticeService implements INoticeService {
         // 데이터 수정하기
         noticeRepository.save(pEntity);
 
-        log.info(this.getClass().getName() + ".updateNoticeInfo End!");
+        log.info("{}.updateNoticeInfo End!", this.getClass().getName());
 
     }
 
     @Override
     public void deleteNoticeInfo(NoticeDTO pDTO) throws Exception {
 
-        log.info(this.getClass().getName() + ".deleteNoticeInfo Start!");
+        log.info("{}.deleteNoticeInfo Start!", this.getClass().getName());
 
         Long noticeSeq = pDTO.noticeSeq();
 
-        log.info("noticeSeq : " + noticeSeq);
+        log.info("noticeSeq : {}", noticeSeq);
 
         // 데이터 수정하기
         noticeRepository.deleteById(noticeSeq);
 
 
-        log.info(this.getClass().getName() + ".deleteNoticeInfo End!");
+        log.info("{}.deleteNoticeInfo End!", this.getClass().getName());
     }
 
     @Override
     public void insertNoticeInfo(NoticeDTO pDTO) throws Exception {
 
-        log.info(this.getClass().getName() + ".InsertNoticeInfo Start!");
+        log.info("{}.InsertNoticeInfo Start!", this.getClass().getName());
 
         String title = CmmUtil.nvl(pDTO.title());
         String noticeYn = CmmUtil.nvl(pDTO.noticeYn());
         String contents = CmmUtil.nvl(pDTO.contents());
         String userId = CmmUtil.nvl(pDTO.userId());
 
-        log.info("title : " + title);
-        log.info("noticeYn : " + noticeYn);
-        log.info("contents : " + contents);
-        log.info("userId : " + userId);
+        log.info("title: {}, noticeYn: {}, contents: {}, userId: {}", title, noticeYn, contents, userId);
 
         // 공지사항 저장을 위해서는 PK 값은 빌더에 추가하지 않는다.
         // JPA에 자동 증가 설정을 해놨음
@@ -145,7 +141,7 @@ public class NoticeService implements INoticeService {
         // 공지사항 저장하기
         noticeRepository.save(pEntity);
 
-        log.info(this.getClass().getName() + ".InsertNoticeInfo End!");
+        log.info("{}.InsertNoticeInfo End!", this.getClass().getName());
 
     }
 }

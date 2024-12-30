@@ -5,6 +5,7 @@ import com.mongodb.client.MongoCollection;
 import kopo.poly.dto.MongoDTO;
 import kopo.poly.persistance.mongodb.AbstractMongoDBComon;
 import kopo.poly.persistance.mongodb.IMongoMapper;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.Document;
@@ -21,26 +22,26 @@ public class MongoMapper extends AbstractMongoDBComon implements IMongoMapper {
     private final MongoTemplate mongodb;
 
     @Override
-    public int insertData(MongoDTO pDTO, String colNm) throws Exception {
+    public int insertData(@NonNull MongoDTO pDTO, @NonNull String colNm) throws Exception {
 
-        log.info(this.getClass().getName() + ".insertData Start!");
-
-        int res = 0;
+        log.info("{}.insertData Start!", this.getClass().getName());
 
         // 데이터를 저장할 컬렉션 생성
-        super.createCollection(mongodb, colNm);
+        if (super.createCollection(mongodb, colNm)) {
+            log.info("Create {} Collection!", colNm);
+        }
 
         // 저장할 컬렉션 객체 생성
         MongoCollection<Document> col = mongodb.getCollection(colNm);
 
-        // DTO를 Map 데이터타입으로 변경 한 뒤, 변경된 Map 데이터타입을 Document로 변경하기
-        col.insertOne(new Document(new ObjectMapper().convertValue(pDTO, Map.class)));
+        // DTO를 Document로 변환 후 저장
+        Document doc = new Document(new ObjectMapper().convertValue(pDTO, Map.class));
+        col.insertOne(doc);
 
-        res = 1;
+        log.info("{}.insertData End!", this.getClass().getName());
 
-        log.info(this.getClass().getName() + ".insertData End!");
-
-        return res;
+        return 1;
     }
+
 }
 

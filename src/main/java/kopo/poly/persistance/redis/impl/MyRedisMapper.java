@@ -3,6 +3,7 @@ package kopo.poly.persistance.redis.impl;
 import kopo.poly.dto.RedisDTO;
 import kopo.poly.persistance.redis.IMyRedisMapper;
 import kopo.poly.util.CmmUtil;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -24,9 +25,9 @@ public class MyRedisMapper implements IMyRedisMapper {
     /**
      * RedisDB 저장된 키 삭제하는 공통 함수
      */
-    private void deleteRedisKey(String redisKey) {
+    private void deleteRedisKey(@NonNull String redisKey) {
 
-        if (redisDB.hasKey(redisKey)) { // 데이터가 존재하면, 기존 데이터 삭제하기
+        if (Boolean.TRUE.equals(redisDB.hasKey(redisKey))) { // 데이터가 존재하면, 기존 데이터 삭제하기
             redisDB.delete(redisKey); // 삭제하기
 
             log.info("삭제 성공!");
@@ -35,9 +36,9 @@ public class MyRedisMapper implements IMyRedisMapper {
     }
 
     @Override
-    public int saveString(String redisKey, RedisDTO pDTO) throws Exception {
+    public int saveString(@NonNull String redisKey, @NonNull RedisDTO pDTO) throws Exception {
 
-        log.info(this.getClass().getName() + ".saveString Start!");
+        log.info("{}.saveString Start!", this.getClass().getName());
 
         int res;
 
@@ -60,17 +61,17 @@ public class MyRedisMapper implements IMyRedisMapper {
 
         res = 1;
 
-        log.info(this.getClass().getName() + ".saveString End!");
+        log.info("{}.saveString End!", this.getClass().getName());
 
         return res;
     }
 
     @Override
-    public RedisDTO getString(String redisKey) throws Exception {
+    public RedisDTO getString(@NonNull String redisKey) throws Exception {
 
-        log.info(this.getClass().getName() + ".getString Start!");
+        log.info("{}.getString Start!", this.getClass().getName());
 
-        log.info("String redisKey : " + redisKey);
+        log.info("String redisKey : {}", redisKey);
 
         /*
          * redis 저장 및 읽기에 대한 데이터 타입 지정(String 타입으로 지정함)
@@ -80,24 +81,24 @@ public class MyRedisMapper implements IMyRedisMapper {
 
         RedisDTO rDTO = null;
 
-        if (redisDB.hasKey(redisKey)) { // 데이터가 존재하면, 조회하기
+        if (Boolean.TRUE.equals(redisDB.hasKey(redisKey))) { // 데이터가 존재하면, 조회하기
             String res = (String) redisDB.opsForValue().get(redisKey); // redisKey 통해 조회하기
 
-            log.info("res : " + res); // 조회 결과
+            log.info("res : {}", res); // 조회 결과
 
             // RedisDB에 저장된 데이터를 DTO에 저장하기
             rDTO = RedisDTO.builder().text(res).build();
         }
 
-        log.info(this.getClass().getName() + ".getString End!");
+        log.info("{}.getString End!", this.getClass().getName());
 
         return rDTO;
     }
 
     @Override
-    public int saveStringJSON(String redisKey, RedisDTO pDTO) throws Exception {
+    public int saveStringJSON(@NonNull String redisKey, @NonNull RedisDTO pDTO) throws Exception {
 
-        log.info(this.getClass().getName() + ".saveStringJSON Start!");
+        log.info("{}.saveStringJSON Start!", this.getClass().getName());
 
         int res;
 
@@ -118,16 +119,16 @@ public class MyRedisMapper implements IMyRedisMapper {
 
         res = 1;
 
-        log.info(this.getClass().getName() + ".saveStringJSON End!");
+        log.info("{}.saveStringJSON End!", this.getClass().getName());
 
         return res;
     }
 
     @Override
-    public RedisDTO getStringJSON(String redisKey) throws Exception {
-        log.info(this.getClass().getName() + ".getStringJSON Start!");
+    public RedisDTO getStringJSON(@NonNull String redisKey) throws Exception {
+        log.info("{}.getStringJSON Start!", this.getClass().getName());
 
-        log.info("String redisKey : " + redisKey);
+        log.info("String redisKey : {}", redisKey);
 
         RedisDTO rDTO = null;
 
@@ -137,20 +138,20 @@ public class MyRedisMapper implements IMyRedisMapper {
         // RedisDTO에 저장된 데이터를 자동으로 JSON으로 변경하기
         redisDB.setValueSerializer(new Jackson2JsonRedisSerializer<>(RedisDTO.class));
 
-        if (redisDB.hasKey(redisKey)) { // 데이터가 존재하면, 조회하기
+        if (Boolean.TRUE.equals(redisDB.hasKey(redisKey))) { // 데이터가 존재하면, 조회하기
             rDTO = (RedisDTO) redisDB.opsForValue().get(redisKey); // redisKey 통해 조회하기
 
         }
 
-        log.info(this.getClass().getName() + ".getStringJSON End!");
+        log.info("{}.getStringJSON End!", this.getClass().getName());
 
         return rDTO;
     }
 
     @Override
-    public int saveList(String redisKey, List<RedisDTO> pList) throws Exception {
+    public int saveList(@NonNull String redisKey, @NonNull List<RedisDTO> pList) throws Exception {
 
-        log.info(this.getClass().getName() + ".saveList Start!");
+        log.info("{}.saveList Start!", this.getClass().getName());
 
         int res;
         /*
@@ -175,15 +176,15 @@ public class MyRedisMapper implements IMyRedisMapper {
 
         res = 1;
 
-        log.info(this.getClass().getName() + ".saveList End!");
+        log.info("{}.saveList End!", this.getClass().getName());
 
         return res;
     }
 
     @Override
-    public List<String> getList(String redisKey) throws Exception {
+    public List<String> getList(@NonNull String redisKey) throws Exception {
 
-        log.info(this.getClass().getName() + ".getRedisList Start!");
+        log.info("{}.getRedisList Start!", this.getClass().getName());
 
         List<String> rList = null;
         /*
@@ -192,20 +193,20 @@ public class MyRedisMapper implements IMyRedisMapper {
         redisDB.setKeySerializer(new StringRedisSerializer()); // String 타입
         redisDB.setValueSerializer(new StringRedisSerializer()); // String 타입
 
-        if (redisDB.hasKey(redisKey)) {
+        if (Boolean.TRUE.equals(redisDB.hasKey(redisKey))) {
             rList = (List) redisDB.opsForList().range(redisKey, 0, -1);
 
         }
 
-        log.info(this.getClass().getName() + ".getRedisList End!");
+        log.info("{}.getRedisList End!", this.getClass().getName());
 
         return rList;
     }
 
     @Override
-    public int saveListJSON(String redisKey, List<RedisDTO> pList) throws Exception {
+    public int saveListJSON(@NonNull String redisKey, @NonNull List<RedisDTO> pList) throws Exception {
 
-        log.info(this.getClass().getName() + ".saveListJSON Start!");
+        log.info("{}.saveListJSON Start!", this.getClass().getName());
 
         int res;
 
@@ -225,15 +226,15 @@ public class MyRedisMapper implements IMyRedisMapper {
 
         res = 1;
 
-        log.info(this.getClass().getName() + ".saveListJSON End!");
+        log.info("{}.saveListJSON End!", this.getClass().getName());
 
         return res;
     }
 
     @Override
-    public List<RedisDTO> getListJSON(String redisKey) throws Exception {
+    public List<RedisDTO> getListJSON(@NonNull String redisKey) throws Exception {
 
-        log.info(this.getClass().getName() + ".getListJSON Start!");
+        log.info("{}.getListJSON Start!", this.getClass().getName());
 
         // 결과 값 저장할 객체
         List<RedisDTO> rList = null;
@@ -244,20 +245,20 @@ public class MyRedisMapper implements IMyRedisMapper {
         // RedisDTO에 저장된 데이터를 자동으로 JSON으로 변경하기
         redisDB.setValueSerializer(new Jackson2JsonRedisSerializer<>(RedisDTO.class));
 
-        if (redisDB.hasKey(redisKey)) {
+        if (Boolean.TRUE.equals(redisDB.hasKey(redisKey))) {
             rList = (List) redisDB.opsForList().range(redisKey, 0, -1);
 
         }
 
-        log.info(this.getClass().getName() + ".getListJSON End!");
+        log.info("{}.getListJSON End!", this.getClass().getName());
 
         return rList;
     }
 
     @Override
-    public int saveHash(String redisKey, RedisDTO pDTO) throws Exception {
+    public int saveHash(@NonNull String redisKey, RedisDTO pDTO) throws Exception {
 
-        log.info(this.getClass().getName() + ".saveHash Start!");
+        log.info("{}.saveHash Start!", this.getClass().getName());
 
         int res;
 
@@ -279,16 +280,16 @@ public class MyRedisMapper implements IMyRedisMapper {
 
         res = 1;
 
-        log.info(this.getClass().getName() + ".saveHash End!");
+        log.info("{}.saveHash End!", this.getClass().getName());
 
         return res;
     }
 
     @Override
-    public RedisDTO getHash(String redisKey) throws Exception {
+    public RedisDTO getHash(@NonNull String redisKey) throws Exception {
 
         // 로그 찍기(추후 찍은 로그를 통해 이 함수에 접근했는지 파악하기 용이하다.)
-        log.info(this.getClass().getName() + ".getHash Start!");
+        log.info("{}.getHash Start!", this.getClass().getName());
 
         // 결과값 전달할 객체
         RedisDTO rDTO = null;
@@ -305,23 +306,23 @@ public class MyRedisMapper implements IMyRedisMapper {
             String email = CmmUtil.nvl((String) redisDB.opsForHash().get(redisKey, "email"));
             String addr = CmmUtil.nvl((String) redisDB.opsForHash().get(redisKey, "addr"));
 
-            log.info("name : " + name);
-            log.info("email : " + email);
-            log.info("addr : " + addr);
+            log.info("name : {}", name);
+            log.info("email : {}", email);
+            log.info("addr : {}", addr);
 
             rDTO = RedisDTO.builder().name(name).email(email).addr(addr).build();
 
         }
 
-        log.info(this.getClass().getName() + ".getHash End!");
+        log.info("{}.getHash End!", this.getClass().getName());
 
         return rDTO;
     }
 
     @Override
-    public int saveSetJSON(String redisKey, List<RedisDTO> pList) throws Exception {
+    public int saveSetJSON(@NonNull String redisKey, @NonNull List<RedisDTO> pList) throws Exception {
 
-        log.info(this.getClass().getName() + ".saveSetJSON Start!");
+        log.info("{}.saveSetJSON Start!", this.getClass().getName());
 
         int res;
 
@@ -333,7 +334,7 @@ public class MyRedisMapper implements IMyRedisMapper {
 
         this.deleteRedisKey(redisKey); // RedisDB 저장된 키 삭제
 
-        log.info("입력받은 데이터 수 : " + pList.size());
+        log.info("입력받은 데이터 수 : {}", pList.size());
 
         // Set 구조는 저장 순서에 상관없이 저장하기 떄문에 List 구조와 달리 방향이 존재하지 않음
         pList.forEach(dto -> redisDB.opsForSet().add(redisKey, dto));
@@ -343,15 +344,15 @@ public class MyRedisMapper implements IMyRedisMapper {
 
         res = 1;
 
-        log.info(this.getClass().getName() + ".saveSetJSON End!");
+        log.info("{}.saveSetJSON End!", this.getClass().getName());
 
         return res;
     }
 
     @Override
-    public Set<RedisDTO> getSetJSON(String redisKey) throws Exception {
+    public Set<RedisDTO> getSetJSON(@NonNull String redisKey) throws Exception {
 
-        log.info(this.getClass().getName() + ".getSetJSON Start!");
+        log.info("{}.getSetJSON Start!", this.getClass().getName());
 
         // 결과값 전달할 객체
         Set<RedisDTO> rSet = null;
@@ -362,20 +363,20 @@ public class MyRedisMapper implements IMyRedisMapper {
         // RedisDTO에 저장된 데이터를 자동으로 JSON으로 변경하기
         redisDB.setValueSerializer(new Jackson2JsonRedisSerializer<>(RedisDTO.class));
 
-        if (redisDB.hasKey(redisKey)) {
+        if (Boolean.TRUE.equals(redisDB.hasKey(redisKey))) {
             rSet = (Set) redisDB.opsForSet().members(redisKey); // RedisDB 데이터 조회하기
 
         }
 
-        log.info(this.getClass().getName() + ".getSetJSON End!");
+        log.info("{}.getSetJSON End!", this.getClass().getName());
 
         return rSet;
     }
 
     @Override
-    public int saveZSetJSON(String redisKey, List<RedisDTO> pList) throws Exception {
+    public int saveZSetJSON(@NonNull String redisKey, @NonNull List<RedisDTO> pList) throws Exception {
 
-        log.info(this.getClass().getName() + ".saveZSetJSON Start!");
+        log.info("{}.saveZSetJSON Start!", this.getClass().getName());
 
         int res;
 
@@ -397,15 +398,15 @@ public class MyRedisMapper implements IMyRedisMapper {
 
         res = 1;
 
-        log.info(this.getClass().getName() + ".saveZSetJSON End!");
+        log.info("{}.saveZSetJSON End!", this.getClass().getName());
 
         return res;
     }
 
     @Override
-    public Set<RedisDTO> getZSetJSON(String redisKey) throws Exception {
+    public Set<RedisDTO> getZSetJSON(@NonNull String redisKey) throws Exception {
 
-        log.info(this.getClass().getName() + ".getZSetJSON Start!");
+        log.info("{}.getZSetJSON Start!", this.getClass().getName());
 
         // 결과값 전달할 객체
         Set<RedisDTO> rSet = null;
@@ -421,7 +422,7 @@ public class MyRedisMapper implements IMyRedisMapper {
 
         }
 
-        log.info(this.getClass().getName() + ".getZSetJSON End!");
+        log.info("{}.getZSetJSON End!", this.getClass().getName());
 
         return rSet;
     }

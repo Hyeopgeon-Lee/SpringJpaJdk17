@@ -46,7 +46,7 @@ public class NoticeController {
             throws Exception {
 
         // 로그 찍기(추후 찍은 로그를 통해 이 함수에 접근했는지 파악하기 용이하다.)
-        log.info(this.getClass().getName() + ".noticeList Start!");
+        log.info("{}.noticeList Start!", this.getClass().getName());
 
         // 로그인된 사용자 아이디는 Session에 저장함
         // 교육용으로 아직 로그인을 구현하지 않았기 때문에 Session에 데이터를 저장하지 않았음
@@ -62,7 +62,7 @@ public class NoticeController {
         model.addAttribute("rList", rList);
 
         // 로그 찍기(추후 찍은 로그를 통해 이 함수 호출이 끝났는지 파악하기 용이하다.)
-        log.info(this.getClass().getName() + ".noticeList End!");
+        log.info("{}.noticeList End!", this.getClass().getName());
 
         // 함수 처리가 끝나고 보여줄 HTML (Thymeleaf) 파일명
         // templates/notice/noticeList.html
@@ -80,9 +80,9 @@ public class NoticeController {
     @GetMapping(value = "noticeReg")
     public String noticeReg() {
 
-        log.info(this.getClass().getName() + ".noticeReg Start!");
+        log.info("{}.noticeReg Start!", this.getClass().getName());
 
-        log.info(this.getClass().getName() + ".noticeReg End!");
+        log.info("{}.noticeReg End!", this.getClass().getName());
 
         // 함수 처리가 끝나고 보여줄 HTML (Thymeleaf) 파일명
         // templates/notice/noticeReg.html
@@ -99,7 +99,7 @@ public class NoticeController {
     @PostMapping(value = "noticeInsert")
     public MsgDTO noticeInsert(HttpServletRequest request, HttpSession session) {
 
-        log.info(this.getClass().getName() + ".noticeInsert Start!");
+        log.info("{}.noticeInsert Start!", this.getClass().getName());
 
         String msg = ""; // 메시지 내용
 
@@ -118,10 +118,10 @@ public class NoticeController {
              * 반드시, 값을 받았으면, 꼭 로그를 찍어서 값이 제대로 들어오는지 파악해야함 반드시 작성할 것
              * ####################################################################################
              */
-            log.info("session user_id : " + userId);
-            log.info("title : " + title);
-            log.info("noticeYn : " + noticeYn);
-            log.info("contents : " + contents);
+            log.info("session user_id : {}", userId);
+            log.info("title : {}", title);
+            log.info("noticeYn : {}", noticeYn);
+            log.info("contents : {}", contents);
 
             // 데이터 저장하기 위해 DTO에 저장하기
             NoticeDTO pDTO = NoticeDTO.builder().userId(userId).title(title)
@@ -140,13 +140,12 @@ public class NoticeController {
             // 저장이 실패되면 사용자에게 보여줄 메시지
             msg = "실패하였습니다. : " + e.getMessage();
             log.info(e.toString());
-            e.printStackTrace();
 
         } finally {
             // 결과 메시지 전달하기
             dto = MsgDTO.builder().msg(msg).build();
 
-            log.info(this.getClass().getName() + ".noticeInsert End!");
+            log.info("{}.noticeInsert End!", this.getClass().getName());
         }
 
         return dto;
@@ -158,7 +157,7 @@ public class NoticeController {
     @GetMapping(value = "noticeInfo")
     public String noticeInfo(HttpServletRequest request, ModelMap model) throws Exception {
 
-        log.info(this.getClass().getName() + ".noticeInfo Start!");
+        log.info("{}.noticeInfo Start!", this.getClass().getName());
 
         String nSeq = CmmUtil.nvl(request.getParameter("nSeq"), "0"); // 공지글번호(PK)
 
@@ -167,7 +166,7 @@ public class NoticeController {
          * 반드시, 값을 받았으면, 꼭 로그를 찍어서 값이 제대로 들어오는지 파악해야함 반드시 작성할 것
          * ####################################################################################
          */
-        log.info("nSeq : " + nSeq);
+        log.info("nSeq : {}", nSeq);
 
         /*
          * 값 전달은 반드시 DTO 객체를 이용해서 처리함 전달 받은 값을 DTO 객체에 넣는다.
@@ -183,7 +182,7 @@ public class NoticeController {
         model.addAttribute("rDTO", rDTO);
 
 
-        log.info(this.getClass().getName() + ".noticeInfo End!");
+        log.info("{}.noticeInfo End!", this.getClass().getName());
 
         return "notice/noticeInfo";
     }
@@ -194,7 +193,7 @@ public class NoticeController {
     @GetMapping(value = "noticeEditInfo")
     public String noticeEditInfo(HttpServletRequest request, ModelMap model) throws Exception {
 
-        log.info(this.getClass().getName() + ".noticeEditInfo Start!");
+        log.info("{}.noticeEditInfo Start!", this.getClass().getName());
 
         String nSeq = CmmUtil.nvl(request.getParameter("nSeq")); // 공지글번호(PK)
 
@@ -203,7 +202,7 @@ public class NoticeController {
          * 반드시, 값을 받았으면, 꼭 로그를 찍어서 값이 제대로 들어오는지 파악해야함 반드시 작성할 것
          * ####################################################################################
          */
-        log.info("nSeq : " + nSeq);
+        log.info("nSeq : {}", nSeq);
 
         /*
          * 값 전달은 반드시 DTO 객체를 이용해서 처리함 전달 받은 값을 DTO 객체에 넣는다.
@@ -217,7 +216,7 @@ public class NoticeController {
         // 조회된 리스트 결과값 넣어주기
         model.addAttribute("rDTO", rDTO);
 
-        log.info(this.getClass().getName() + ".noticeEditInfo End!");
+        log.info("{}.noticeEditInfo End!", this.getClass().getName());
 
         return "notice/noticeEditInfo";
     }
@@ -229,10 +228,10 @@ public class NoticeController {
     @PostMapping(value = "noticeUpdate")
     public MsgDTO noticeUpdate(HttpSession session, HttpServletRequest request) {
 
-        log.info(this.getClass().getName() + ".noticeUpdate Start!");
+        log.info("{}.noticeUpdate Start!", this.getClass().getName());
 
         String msg = ""; // 메시지 내용
-        MsgDTO dto = null; // 결과 메시지 구조
+        MsgDTO dto; // 결과 메시지 구조
 
         try {
             String userId = CmmUtil.nvl((String) session.getAttribute("SESSION_USER_ID")); // 아이디
@@ -246,11 +245,11 @@ public class NoticeController {
              * 반드시, 값을 받았으면, 꼭 로그를 찍어서 값이 제대로 들어오는지 파악해야함 반드시 작성할 것
              * ####################################################################################
              */
-            log.info("userId : " + userId);
-            log.info("nSeq : " + nSeq);
-            log.info("title : " + title);
-            log.info("noticeYn : " + noticeYn);
-            log.info("contents : " + contents);
+            log.info("userId : {}", userId);
+            log.info("nSeq : {}", nSeq);
+            log.info("title : {}", title);
+            log.info("noticeYn : {}", noticeYn);
+            log.info("contents : {}", contents);
 
             /*
              * 값 전달은 반드시 DTO 객체를 이용해서 처리함 전달 받은 값을 DTO 객체에 넣는다.
@@ -266,14 +265,13 @@ public class NoticeController {
         } catch (Exception e) {
             msg = "실패하였습니다. : " + e.getMessage();
             log.info(e.toString());
-            e.printStackTrace();
 
         } finally {
 
             // 결과 메시지 전달하기
             dto = MsgDTO.builder().msg(msg).build();
 
-            log.info(this.getClass().getName() + ".noticeUpdate End!");
+            log.info("{}.noticeUpdate End!", this.getClass().getName());
 
         }
 
@@ -287,10 +285,10 @@ public class NoticeController {
     @PostMapping(value = "noticeDelete")
     public MsgDTO noticeDelete(HttpServletRequest request) {
 
-        log.info(this.getClass().getName() + ".noticeDelete Start!");
+        log.info("{}.noticeDelete Start!", this.getClass().getName());
 
         String msg = ""; // 메시지 내용
-        MsgDTO dto = null; // 결과 메시지 구조
+        MsgDTO dto; // 결과 메시지 구조
 
         try {
             String nSeq = CmmUtil.nvl(request.getParameter("nSeq")); // 글번호(PK)
@@ -300,7 +298,7 @@ public class NoticeController {
              * 반드시, 값을 받았으면, 꼭 로그를 찍어서 값이 제대로 들어오는지 파악해야함 반드시 작성할 것
              * ####################################################################################
              */
-            log.info("nSeq : " + nSeq);
+            log.info("nSeq : {}", nSeq);
 
             /*
              * 값 전달은 반드시 DTO 객체를 이용해서 처리함 전달 받은 값을 DTO 객체에 넣는다.
@@ -315,14 +313,13 @@ public class NoticeController {
         } catch (Exception e) {
             msg = "실패하였습니다. : " + e.getMessage();
             log.info(e.toString());
-            e.printStackTrace();
 
         } finally {
 
             // 결과 메시지 전달하기
             dto = MsgDTO.builder().msg(msg).build();
 
-            log.info(this.getClass().getName() + ".noticeDelete End!");
+            log.info("{}.noticeDelete End!", this.getClass().getName());
 
         }
 

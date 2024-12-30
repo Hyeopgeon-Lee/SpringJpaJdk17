@@ -28,15 +28,14 @@ public class RedisController {
     @PostMapping(value = "saveString")
     public ResponseEntity saveString(@RequestBody RedisDTO pDTO) throws Exception {
 
-        log.info(this.getClass().getName() + ".saveString Start!");
-
-        log.info("pDTO : " + pDTO); // 전달받은 값 로그로 확인하기!(반드시 작성하기)
+        log.info("{}.saveString Start!", this.getClass().getName());
+        log.info("pDTO : {}", pDTO);
 
         // Java 8부터 제공되는 Optional 활용하여 NPE(Null Pointer Exception) 처리
         RedisDTO rDTO = Optional.ofNullable(myRedisService.saveString(pDTO))
                 .orElseGet(() -> RedisDTO.builder().build());
 
-        log.info(this.getClass().getName() + ".saveString End!");
+        log.info("{}.saveString End!", this.getClass().getName());
 
         return ResponseEntity.ok(
                 CommonResponse.of(HttpStatus.OK, HttpStatus.OK.series().name(), rDTO));
@@ -49,15 +48,14 @@ public class RedisController {
     @PostMapping(value = "saveStringJSON")
     public ResponseEntity saveStringJSON(@RequestBody RedisDTO pDTO) throws Exception {
 
-        log.info(this.getClass().getName() + ".saveStringJSON Start!");
-
-        log.info("pDTO : " + pDTO); // 전달받은 값 로그로 확인하기!(반드시 작성하기)
+        log.info("{}.saveStringJSON Start!", this.getClass().getName());
+        log.info("pDTO : {}", pDTO);
 
         // Java 8부터 제공되는 Optional 활용하여 NPE(Null Pointer Exception) 처리
         RedisDTO rDTO = Optional.ofNullable(myRedisService.saveStringJSON(pDTO))
                 .orElseGet(() -> RedisDTO.builder().build());
 
-        log.info(this.getClass().getName() + ".saveStringJSON End!");
+        log.info("{}.saveStringJSON End!", this.getClass().getName());
 
         return ResponseEntity.ok(
                 CommonResponse.of(HttpStatus.OK, HttpStatus.OK.series().name(), rDTO));
@@ -70,15 +68,14 @@ public class RedisController {
     @PostMapping(value = "saveList")
     public ResponseEntity saveList(@RequestBody List<RedisDTO> pList) throws Exception {
 
-        log.info(this.getClass().getName() + ".saveList Start!");
-
-        log.info("pList : " + pList); // 전달받은 값 로그로 확인하기!(반드시 작성하기)
+        log.info("{}.saveList Start!", this.getClass().getName());
+        log.info("pList : {}", pList);
 
         // Java 8부터 제공되는 Optional 활용하여 NPE(Null Pointer Exception) 처리
         List<String> rList = Optional.ofNullable(myRedisService.saveList(pList))
                 .orElseGet(ArrayList::new);
 
-        log.info(this.getClass().getName() + ".saveList End!");
+        log.info("{}.saveList End!", this.getClass().getName());
 
         return ResponseEntity.ok(
                 CommonResponse.of(HttpStatus.OK, HttpStatus.OK.series().name(), rList));
@@ -91,15 +88,14 @@ public class RedisController {
     @PostMapping(value = "saveListJSON")
     public ResponseEntity saveListJSON(@RequestBody List<RedisDTO> pList) throws Exception {
 
-        log.info(this.getClass().getName() + "saveListJSON. Start!");
-
-        log.info("pList : " + pList); // 전달받은 값 로그로 확인하기!(반드시 작성하기)
+        log.info("{}.saveListJSON Start!", this.getClass().getName());
+        log.info("pList : {}", pList);
 
         // Java 8부터 제공되는 Optional 활용하여 NPE(Null Pointer Exception) 처리
         List<RedisDTO> rList = Optional.ofNullable(myRedisService.saveListJSON(pList))
                 .orElseGet(ArrayList::new);
 
-        log.info(this.getClass().getName() + ".saveListJSON End!");
+        log.info("{}.saveListJSON End!", this.getClass().getName());
 
         return ResponseEntity.ok(
                 CommonResponse.of(HttpStatus.OK, HttpStatus.OK.series().name(), rList));
@@ -111,15 +107,14 @@ public class RedisController {
     @PostMapping(value = "saveHash")
     public ResponseEntity saveHash(@RequestBody RedisDTO pDTO) throws Exception {
 
-        log.info(this.getClass().getName() + ".saveHash Start!");
-
-        log.info("pDTO : " + pDTO); // 전달받은 값 로그로 확인하기!(반드시 작성하기)
+        log.info("{}.saveHash Start!", this.getClass().getName());
+        log.info("pDTO : {}", pDTO);
 
         // Java 8부터 제공되는 Optional 활용하여 NPE(Null Pointer Exception) 처리
         RedisDTO rDTO = Optional.ofNullable(myRedisService.saveHash(pDTO))
                 .orElseGet(() -> RedisDTO.builder().build());
 
-        log.info(this.getClass().getName() + ".saveHash End!");
+        log.info("{}.saveHash End!", this.getClass().getName());
 
         return ResponseEntity.ok(
                 CommonResponse.of(HttpStatus.OK, HttpStatus.OK.series().name(), rDTO));
@@ -131,15 +126,14 @@ public class RedisController {
     @PostMapping(value = "saveSetJSON")
     public ResponseEntity saveSetJSON(@RequestBody List<RedisDTO> pList) throws Exception {
 
-        log.info(this.getClass().getName() + ".saveSetJSON Start!");
-
-        log.info("pList : " + pList);
+        log.info("{}.saveSetJSON Start!", this.getClass().getName());
+        log.info("pList : {}", pList);
 
         // Java 8부터 제공되는 Optional 활용하여 NPE(Null Pointer Exception) 처리
         Set<RedisDTO> rSet = Optional.ofNullable(myRedisService.saveSetJSON(pList))
                 .orElseGet(HashSet::new);
 
-        log.info(this.getClass().getName() + ".saveSetJSON End!");
+        log.info("{}.saveSetJSON End!", this.getClass().getName());
 
         return ResponseEntity.ok(
                 CommonResponse.of(HttpStatus.OK, HttpStatus.OK.series().name(), rSet));
@@ -151,15 +145,14 @@ public class RedisController {
     @PostMapping(value = "saveZSetJSON")
     public ResponseEntity saveRedisZSetJSON(@RequestBody List<RedisDTO> pList) throws Exception {
 
-        log.info(this.getClass().getName() + ".saveZSetJSON Start!");
-
-        log.info("pList : " + pList);
+        log.info("{}.saveZSetJSON Start!", this.getClass().getName());
+        log.info("pList : {}", pList);
 
         // Java 8부터 제공되는 Optional 활용하여 NPE(Null Pointer Exception) 처리
         Set<RedisDTO> rSet = Optional.ofNullable(myRedisService.saveZSetJSON(pList))
                 .orElseGet(HashSet::new);
 
-        log.info(this.getClass().getName() + ".saveZSetJSON End!");
+        log.info("{}.saveZSetJSON End!", this.getClass().getName());
 
         return ResponseEntity.ok(
                 CommonResponse.of(HttpStatus.OK, HttpStatus.OK.series().name(), rSet));

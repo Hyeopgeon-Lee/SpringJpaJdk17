@@ -6,6 +6,7 @@ import kopo.poly.repository.entity.UserInfoEntity;
 import kopo.poly.service.IUserInfoService;
 import kopo.poly.util.CmmUtil;
 import kopo.poly.util.DateUtil;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,39 +22,35 @@ public class UserInfoService implements IUserInfoService {
     private final UserInfoRepository userInfoRepository;
 
     @Override
-    public UserInfoDTO getUserIdExists(UserInfoDTO pDTO) throws Exception {
+    public UserInfoDTO getUserIdExists(@NonNull UserInfoDTO pDTO) throws Exception {
+        log.info("{}.getUserIdExists Start!", this.getClass().getName());
 
-        log.info(this.getClass().getName() + ".getUserIdExists Start!");
-
-        UserInfoDTO rDTO;
+        log.info("pDTO : {}", pDTO);
 
         String userId = CmmUtil.nvl(pDTO.userId()); // 아이디
 
-        log.info("userId : " + userId);
+        // DB에서 아이디 중복 여부 확인
+        boolean exists = userInfoRepository.findByUserId(userId).isPresent();
 
-        // 회원 가입 중복 방지를 위해 DB에서 데이터 조회
-        Optional<UserInfoEntity> rEntity = userInfoRepository.findByUserId(userId);
+        // 존재 여부에 따라 DTO 생성
+        UserInfoDTO rDTO = UserInfoDTO.builder()
+                .existsYn(exists ? "Y" : "N")
+                .build();
 
-        // 값이 존재한다면... (이미 회원가입된 아이디)
-        if (rEntity.isPresent()) {
-            rDTO = UserInfoDTO.builder().existsYn("Y").build();
-
-        } else {
-            rDTO = UserInfoDTO.builder().existsYn("N").build();
-        }
-
-        log.info(this.getClass().getName() + ".getUserIdExists End!");
-
+        log.info("{}.getUserIdExists End!", this.getClass().getName());
         return rDTO;
     }
 
-    @Override
-    public int insertUserInfo(UserInfoDTO pDTO) throws Exception {
 
-        log.info(this.getClass().getName() + ".insertUserInfo Start!");
+    @Override
+    public int insertUserInfo(@NonNull UserInfoDTO pDTO) throws Exception {
+
+        log.info("{}.insertUserInfo Start!", this.getClass().getName());
+
+        log.info("pDTO : {}", pDTO); // Controller 에서 값 전달 잘 되었는지 확인하기
 
         // 회원가입 성공 : 1, 아이디 중복으로인한 가입 취소 : 2, 기타 에러 발생 : 0
-        int res = 0;
+        int res;
 
         String userId = CmmUtil.nvl(pDTO.userId()); // 아이디
         String userName = CmmUtil.nvl(pDTO.userName()); // 이름
@@ -61,8 +58,6 @@ public class UserInfoService implements IUserInfoService {
         String email = CmmUtil.nvl(pDTO.email()); // 이메일
         String addr1 = CmmUtil.nvl(pDTO.addr1()); // 주소
         String addr2 = CmmUtil.nvl(pDTO.addr2()); // 상세주소
-
-        log.info("pDTO : " + pDTO); // Controller 에서 값 전달 잘 되었는지 확인하기
 
         // 회원 가입 중복 방지를 위해 DB에서 데이터 조회
         Optional<UserInfoEntity> rEntity = userInfoRepository.findByUserId(userId);
@@ -90,19 +85,11 @@ public class UserInfoService implements IUserInfoService {
             // 물론 잘 저장되겠지만, 내가 실행한 save 함수가 DB에 등록이 잘 수행되었는지 100% 확신이 불가능함
             // 회원 가입후, 혹시 저장 안될 수 있기에 조회 수행함
             // 회원 가입 중복 방지를 위해 DB에서 데이터 조회
-            rEntity = userInfoRepository.findByUserId(userId);
-
-            if (rEntity.isPresent()) { // 값이 존재한다면... (회원가입 성공)
-                res = 1;
-
-            } else { // 값이 없다면... (회원가입 실패)
-                res = 0;
-
-            }
+            res = userInfoRepository.findByUserId(userId).isPresent() ? 1 : 0;
 
         }
 
-        log.info(this.getClass().getName() + ".insertUserInfo End!");
+        log.info("{}.insertUserInfo End!", this.getClass().getName());
 
         return res;
     }
@@ -114,28 +101,21 @@ public class UserInfoService implements IUserInfoService {
      * @return 로그인된 회원아이디 정보
      */
     @Override
-    public int getUserLogin(UserInfoDTO pDTO) throws Exception {
+    public int getUserLogin(@NonNull UserInfoDTO pDTO) throws Exception {
 
-        log.info(this.getClass().getName() + ".getUserLoginCheck Start!");
-
-        // 로그인 성공 : 1, 실패 : 0
-        int res = 0;
+        log.info("{}.getUserLoginCheck Start!", this.getClass().getName());
 
         String userId = CmmUtil.nvl(pDTO.userId()); // 아이디
         String password = CmmUtil.nvl(pDTO.password()); // 비밀번호
 
-        log.info("userId : " + userId);
-        log.info("password : " + password);
+        log.info("userId : {}, password : {}", userId, password);
 
         // 로그인을 위해 아이디와 비밀번호가 일치하는지 확인하기 위한 JPA 호출하기
-        Optional<UserInfoEntity> rEntity = userInfoRepository.findByUserIdAndPassword(userId, password);
+        boolean res = userInfoRepository.findByUserIdAndPassword(userId, password).isPresent();
 
-        if (rEntity.isPresent()) {
-            res = 1;
-        }
+        log.info("{}.getUserLoginCheck End!", this.getClass().getName());
 
-        log.info(this.getClass().getName() + ".getUserLoginCheck End!");
-
-        return res;
+        // 로그인 성공 : 1, 실패 : 0
+        return res ? 1 : 0;
     }
 }
