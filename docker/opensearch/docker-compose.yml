@@ -1,0 +1,44 @@
+version: '3.8'
+services:
+  opensearch:
+    image: opensearchproject/opensearch:latest
+    container_name: opensearch
+    environment:
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m"
+      - OPENSEARCH_INITIAL_ADMIN_PASSWORD=StrongPassword123!
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    ports:
+      - "9200:9200"
+      - "9600:9600"
+
+  dashboards:
+    image: opensearchproject/opensearch-dashboards:latest
+    container_name: dashboards
+    environment:
+      - OPENSEARCH_HOSTS=https://opensearch:9200
+    ports:
+      - "5601:5601"
+    depends_on:
+      - opensearch
+
+  fluentd:
+    build:
+      context: ./fluentd
+      dockerfile: Dockerfile
+    container_name: fluentd
+    ports:
+      - "24224:24224"
+      - "24224:24224/udp"
+    volumes:
+      - ./fluentd/fluent.conf:/fluentd/etc/fluent.conf
+      - ./fluentd/log:/fluentd/log
+    environment:
+      FLUENT_ELASTICSEARCH_HOST: opensearch
+      FLUENT_ELASTICSEARCH_PORT: 9200
+    depends_on:
+      - opensearch

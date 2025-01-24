@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!-- Spring Boot 기본 설정 포함 -->
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+
+    <!-- 로그 파일 저장 위치 설정 -->
+    <property name="log_dir" value="/data/log/SpringJpaJdk17"/>
+
+    <!-- Fluentd 설정 -->
+    <property name="remoteHost" value="localhost"/>
+    <property name="port" value="24224"/>
+    <property name="tag" value="JPA"/>
+
+    <!-- 파일에 로그를 남기는 설정 -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log_dir}/myLog.log</file>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>%d{yyyy-MM-dd HH:mm:ss} [%-5level] %logger{36} - %msg%n</Pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log_dir}/mySpringProject.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <!-- Fluentd로 로그 전송 -->
+    <appender name="FLUENTD" class="kopo.poly.config.FluentdAppender">
+        <remoteHost>${remoteHost}</remoteHost>
+        <port>${port}</port>
+        <tag>${tag}</tag>
+    </appender>
+
+    <!-- 로그 레벨별 설정 -->
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FLUENTD"/>
+    </root>
+
+    <logger name="kopo.poly" level="DEBUG" additivity="false">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
+        <appender-ref ref="FLUENTD"/>
+    </logger>
+</configuration>
