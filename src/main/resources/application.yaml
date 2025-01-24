@@ -1,0 +1,58 @@
+# Spring Boot Web Server Port
+server:
+  port: 11000
+
+# Spring Configuration
+spring:
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://localhost:3306/myDB?useSSL=false # SSL \uBE44\uD65C\uC131\uD654
+    username: poly # DB \uC0AC\uC6A9\uC790 \uC774\uB984
+    password: 1234 # DB \uBE44\uBC00\uBC88\uD638
+    hikari:
+      maximum-pool-size: 10 # HikariCP \uC5F0\uACB0 \uD480 \uCD5C\uB300 \uD06C\uAE30
+      minimum-idle: 2 # \uC5F0\uACB0 \uD480\uC758 \uCD5C\uC18C \uC720\uC9C0 \uC5F0\uACB0 \uC218
+      idle-timeout: 30000 # \uC5F0\uACB0 \uD480\uC5D0\uC11C \uC720\uD734 \uC5F0\uACB0 \uC720\uC9C0 \uC2DC\uAC04 (\uBC00\uB9AC\uCD08)
+      max-lifetime: 1800000 # \uC5F0\uACB0\uC758 \uCD5C\uB300 \uC218\uBA85 (\uBC00\uB9AC\uCD08)
+
+  jpa:
+    hibernate:
+      ddl-auto: none # DDL \uC790\uB3D9 \uC0DD\uC131 \uBE44\uD65C\uC131\uD654 (none: \uC544\uBB34 \uC791\uC5C5\uB3C4 \uD558\uC9C0 \uC54A\uC74C)
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    show-sql: true # JPA \uCFFC\uB9AC \uC2E4\uD589 \uC2DC SQL \uB85C\uADF8\uB97C \uCD9C\uB825
+    open-in-view: false # Lazy \uB85C\uB529 \uC2DC \uBD88\uD544\uC694\uD55C \uC138\uC158 \uC5F4\uB9BC \uBC29\uC9C0
+    properties:
+      hibernate:
+        format_sql: true # SQL \uD3EC\uB9F7\uD305 \uD65C\uC131\uD654 (SQL \uB85C\uADF8\uB97C \uAC00\uB3C5\uC131 \uC788\uAC8C \uCD9C\uB825)
+        use_sql_comments: true # SQL \uC8FC\uC11D \uCD9C\uB825 \uD65C\uC131\uD654
+        default_batch_fetch_size: 100 # \uD398\uCE58(fetch) \uC804\uB7B5 \uC124\uC815 (\uB300\uB7C9 \uB370\uC774\uD130 \uC870\uD68C \uC2DC \uC131\uB2A5 \uCD5C\uC801\uD654)
+        cache:
+          use_second_level_cache: true # Hibernate 2\uCC28 \uCE90\uC2DC \uD65C\uC131\uD654
+          use_query_cache: true # \uCFFC\uB9AC \uCE90\uC2DC \uD65C\uC131\uD654
+          region.factory_class: org.hibernate.cache.jcache.JCacheRegionFactory # JCache\uB97C 2\uCC28 \uCE90\uC2DC\uB85C \uC0AC\uC6A9
+        generate_statistics: true # Hibernate \uD1B5\uACC4 \uD65C\uC131\uD654
+
+  data:
+    mongodb:
+      host: 192.168.2.129
+      port: 27017
+      database: MyDB
+      username: myUser
+      password: ${MONGODB_PASSWORD} # MongoDB \uBE44\uBC00\uBC88\uD638\uB294 \uD658\uACBD \uBCC0\uC218\uB85C \uAD00\uB9AC
+    redis:
+      host: 192.168.2.129
+      port: 6379
+      username: poly
+      password: ${REDIS_PASSWORD} # Redis \uBE44\uBC00\uBC88\uD638\uB294 \uD658\uACBD \uBCC0\uC218\uB85C \uAD00\uB9AC
+
+  thymeleaf:
+    cache: false # Thymeleaf \uD15C\uD50C\uB9BF \uCE90\uC2F1 \uBE44\uD65C\uC131\uD654 (\uAC1C\uBC1C \uD658\uACBD\uC5D0\uC11C\uB9CC \uC0AC\uC6A9)
+    check-template-location: true # Thymeleaf \uD15C\uD50C\uB9BF \uACBD\uB85C \uAC80\uC99D \uD65C\uC131\uD654
+    prefix: classpath:/templates/ # Thymeleaf \uD15C\uD50C\uB9BF \uAE30\uBCF8 \uACBD\uB85C
+    suffix: .html # Thymeleaf \uD15C\uD50C\uB9BF \uD30C\uC77C \uD655\uC7A5\uC790
+
+# Hibernate Statistics Logging
+logging:
+  level:
+    org.hibernate.stat: DEBUG # Hibernate \uD1B5\uACC4 \uB514\uBC84\uADF8 \uB85C\uADF8 \uD65C\uC131\uD654
