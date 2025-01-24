@@ -28,6 +28,8 @@
 7. **웹 크롤링 데이터를 MongoDB에 저장 및 CRUD 프로그래밍**
 8. **RedisDB를 활용한 캐싱 프로그래밍**
 9. **음성 명령으로 CGV 영화 순위 정보를 웹 크롤링한 뒤 RedisDB에 저장하는 프로그래밍**
+10. **LogBack과 fluentd 연동하여 Open Search에 로그 수집하기**
+11. **Open Search 대시보스를 활용한 로그 분석**
 
 ---
 
@@ -36,6 +38,15 @@
 - **Spring Boot Frameworks**
 - **Spring Data JPA**
 - **QueryDSL**
+
+---
+
+## 🛠️ 로그 수집 환경
+
+- **Fluentd**
+- **Open Search**
+- **Open Search Dashboard**
+- **도커 컴포즈를 활용한 환경 구성**
 
 ---
 
