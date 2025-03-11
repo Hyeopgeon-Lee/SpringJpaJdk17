@@ -6,6 +6,7 @@ create table notice
     CONTENTS   varchar(4000) null,
     NOTICE_YN  varchar(100)  null,
     READ_CNT   int           null,
+    VERSION    int           null,
     USER_ID    varchar(100)  null,
     REG_ID     varchar(100)  null,
     REG_DT     datetime      null,

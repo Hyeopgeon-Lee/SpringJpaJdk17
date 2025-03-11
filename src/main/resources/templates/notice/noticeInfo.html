@@ -26,7 +26,7 @@
 
             // 버튼 클릭했을때, 발생되는 이벤트 생성함(onclick 이벤트와 동일함)
             $("#btnList").on("click", function () {
-                location.href = "/noticeList"; // 공지사항 리스트 이동
+                location.href = "/notice/noticeList"; // 공지사항 리스트 이동
             })
         })
 
@@ -58,7 +58,7 @@
                             success:
                                 function (json) { // /notice/noticeDelete 호출이 성공했다면..
                                     alert(json.msg); // 메시지 띄우기
-                                    location.href = "/noticeList"; // 공지사항 리스트 이동
+                                    location.href = "/notice/noticeList"; // 공지사항 리스트 이동
                                 }
                         }
                     )

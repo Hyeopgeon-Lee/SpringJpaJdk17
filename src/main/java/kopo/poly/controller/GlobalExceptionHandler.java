@@ -63,11 +63,11 @@ public class GlobalExceptionHandler {
      * @param e 발생한 Exception 예외 객체
      * @return ResponseEntity<CommonResponse> - HTTP 응답 객체
      */
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<CommonResponse<String>> handleException(Exception e) {
-
-        return ResponseEntity.ok(
-                CommonResponse.of(HttpStatus.INTERNAL_SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR.series().name(),
-                        e.getMessage()));
-    }
+//    @ExceptionHandler(Exception.class)
+//    public ResponseEntity<CommonResponse<String>> handleException(Exception e) {
+//
+//        return ResponseEntity.ok(
+//                CommonResponse.of(HttpStatus.INTERNAL_SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR.series().name(),
+//                        e.getMessage()));
+//    }
 }
