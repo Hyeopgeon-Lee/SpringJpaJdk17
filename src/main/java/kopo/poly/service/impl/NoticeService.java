@@ -93,6 +93,7 @@ public class NoticeService implements INoticeService {
         NoticeEntity pEntity = NoticeEntity.builder()
                 .noticeSeq(noticeSeq).title(title).noticeYn(noticeYn).contents(contents).userId(userId)
                 .readCnt(rEntity.getReadCnt())
+                .version(rEntity.getVersion())
                 .build();
 
         // 데이터 수정하기

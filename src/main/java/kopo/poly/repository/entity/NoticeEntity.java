@@ -54,5 +54,6 @@ public class NoticeEntity {
     private String chgDt;
 
     @Version
-    private Integer version;  // 낙관적 락을 위한 버전 관리
+    @Column(name = "version", nullable = false)
+    private Integer version = 0;  // 기본값 설정
 }
