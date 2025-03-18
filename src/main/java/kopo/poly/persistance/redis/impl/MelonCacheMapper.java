@@ -3,7 +3,6 @@ package kopo.poly.persistance.redis.impl;
 import kopo.poly.dto.MelonDTO;
 import kopo.poly.persistance.redis.IMelonCacheMapper;
 import kopo.poly.util.DateUtil;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -12,6 +11,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
@@ -19,10 +19,10 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class MelonCacheMapper implements IMelonCacheMapper {
 
-    public final RedisTemplate<String, Object> redisDB;
+    private final RedisTemplate<String, Object> redisDB;
 
     @Override
-    public int insertSong(@NonNull List<MelonDTO> pList, @NonNull String redisKey) throws Exception {
+    public int insertSong(List<MelonDTO> pList, String redisKey) throws RuntimeException {
 
         log.info("{}.insertSong Start!", this.getClass().getName());
 
@@ -48,12 +48,12 @@ public class MelonCacheMapper implements IMelonCacheMapper {
     }
 
     @Override
-    public boolean getExistKey(@NonNull String key) throws Exception {
-        return Boolean.TRUE.equals(redisDB.hasKey(key));
+    public boolean getExistKey(String key) throws Exception {
+        return Optional.ofNullable(redisDB.hasKey(key)).orElseThrow(Exception::new);
     }
 
     @Override
-    public List<MelonDTO> getSongList(@NonNull String key) throws Exception {
+    public List<MelonDTO> getSongList(String key) throws Exception {
 
         log.info("{}.getSongList Start!", this.getClass().getName());
 
@@ -63,12 +63,12 @@ public class MelonCacheMapper implements IMelonCacheMapper {
         List<MelonDTO> rList = null;
 
         // 저장된 키가 존재한다면...
-        if (Boolean.TRUE.equals(redisDB.hasKey(key))) {
+        if (Optional.ofNullable(redisDB.hasKey(key)).orElseThrow(Exception::new)) {
             rList = (List) redisDB.opsForList().range(key, 0, -1);
-
-            // 저장된 데이터는 1시간동안 연장하기
-            redisDB.expire(key, 1, TimeUnit.HOURS);
         }
+
+        // 저장된 데이터는 1시간동안 연장하기
+        redisDB.expire(key, 1, TimeUnit.HOURS);
 
         log.info("{}.getSongList End!", this.getClass().getName());
 

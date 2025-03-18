@@ -3,9 +3,9 @@ package kopo.poly.persistance.redis.impl;
 import kopo.poly.dto.RedisDTO;
 import kopo.poly.persistance.redis.IMyRedisMapper;
 import kopo.poly.util.CmmUtil;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
@@ -25,7 +25,7 @@ public class MyRedisMapper implements IMyRedisMapper {
     /**
      * RedisDB 저장된 키 삭제하는 공통 함수
      */
-    private void deleteRedisKey(@NonNull String redisKey) {
+    private void deleteRedisKey(String redisKey) {
 
         if (Boolean.TRUE.equals(redisDB.hasKey(redisKey))) { // 데이터가 존재하면, 기존 데이터 삭제하기
             redisDB.delete(redisKey); // 삭제하기
@@ -36,7 +36,7 @@ public class MyRedisMapper implements IMyRedisMapper {
     }
 
     @Override
-    public int saveString(@NonNull String redisKey, @NonNull RedisDTO pDTO) throws Exception {
+    public int saveString(String redisKey, RedisDTO pDTO) throws DataAccessException {
 
         log.info("{}.saveString Start!", this.getClass().getName());
 
@@ -67,7 +67,7 @@ public class MyRedisMapper implements IMyRedisMapper {
     }
 
     @Override
-    public RedisDTO getString(@NonNull String redisKey) throws Exception {
+    public RedisDTO getString(String redisKey) throws DataAccessException {
 
         log.info("{}.getString Start!", this.getClass().getName());
 
@@ -96,7 +96,7 @@ public class MyRedisMapper implements IMyRedisMapper {
     }
 
     @Override
-    public int saveStringJSON(@NonNull String redisKey, @NonNull RedisDTO pDTO) throws Exception {
+    public int saveStringJSON(String redisKey, RedisDTO pDTO) throws DataAccessException {
 
         log.info("{}.saveStringJSON Start!", this.getClass().getName());
 
@@ -125,7 +125,7 @@ public class MyRedisMapper implements IMyRedisMapper {
     }
 
     @Override
-    public RedisDTO getStringJSON(@NonNull String redisKey) throws Exception {
+    public RedisDTO getStringJSON(String redisKey) throws DataAccessException {
         log.info("{}.getStringJSON Start!", this.getClass().getName());
 
         log.info("String redisKey : {}", redisKey);
@@ -149,7 +149,7 @@ public class MyRedisMapper implements IMyRedisMapper {
     }
 
     @Override
-    public int saveList(@NonNull String redisKey, @NonNull List<RedisDTO> pList) throws Exception {
+    public int saveList(String redisKey, List<RedisDTO> pList) throws DataAccessException {
 
         log.info("{}.saveList Start!", this.getClass().getName());
 
@@ -164,7 +164,7 @@ public class MyRedisMapper implements IMyRedisMapper {
 
         pList.forEach(dto -> {
 //            오름차순으로 저장하기
-//            redisDB.opsForList().rightPush(redisKey, CmmUtil.nvl(text));
+//                    redisDB.opsForList().rightPush(redisKey, CmmUtil.nvl(dto.text()));
 
                     // 내림차순으로 저장하기
                     redisDB.opsForList().leftPush(redisKey, CmmUtil.nvl(dto.text()));
@@ -182,7 +182,7 @@ public class MyRedisMapper implements IMyRedisMapper {
     }
 
     @Override
-    public List<String> getList(@NonNull String redisKey) throws Exception {
+    public List<String> getList(String redisKey) throws DataAccessException {
 
         log.info("{}.getRedisList Start!", this.getClass().getName());
 
@@ -204,7 +204,7 @@ public class MyRedisMapper implements IMyRedisMapper {
     }
 
     @Override
-    public int saveListJSON(@NonNull String redisKey, @NonNull List<RedisDTO> pList) throws Exception {
+    public int saveListJSON(String redisKey, List<RedisDTO> pList) throws DataAccessException {
 
         log.info("{}.saveListJSON Start!", this.getClass().getName());
 
@@ -232,7 +232,7 @@ public class MyRedisMapper implements IMyRedisMapper {
     }
 
     @Override
-    public List<RedisDTO> getListJSON(@NonNull String redisKey) throws Exception {
+    public List<RedisDTO> getListJSON(String redisKey) throws DataAccessException {
 
         log.info("{}.getListJSON Start!", this.getClass().getName());
 
@@ -256,7 +256,7 @@ public class MyRedisMapper implements IMyRedisMapper {
     }
 
     @Override
-    public int saveHash(@NonNull String redisKey, RedisDTO pDTO) throws Exception {
+    public int saveHash(String redisKey, RedisDTO pDTO) throws DataAccessException {
 
         log.info("{}.saveHash Start!", this.getClass().getName());
 
@@ -286,7 +286,7 @@ public class MyRedisMapper implements IMyRedisMapper {
     }
 
     @Override
-    public RedisDTO getHash(@NonNull String redisKey) throws Exception {
+    public RedisDTO getHash(String redisKey) throws DataAccessException {
 
         // 로그 찍기(추후 찍은 로그를 통해 이 함수에 접근했는지 파악하기 용이하다.)
         log.info("{}.getHash Start!", this.getClass().getName());
@@ -301,7 +301,7 @@ public class MyRedisMapper implements IMyRedisMapper {
         redisDB.setHashKeySerializer(new StringRedisSerializer()); // Hash 구조의 키 타입, String 타입
         redisDB.setHashValueSerializer(new StringRedisSerializer()); // Hash 구조의 값 타입, String 타입
 
-        if (redisDB.hasKey(redisKey)) {
+        if (Boolean.TRUE.equals(redisDB.hasKey(redisKey))) {
             String name = CmmUtil.nvl((String) redisDB.opsForHash().get(redisKey, "name"));
             String email = CmmUtil.nvl((String) redisDB.opsForHash().get(redisKey, "email"));
             String addr = CmmUtil.nvl((String) redisDB.opsForHash().get(redisKey, "addr"));
@@ -320,7 +320,7 @@ public class MyRedisMapper implements IMyRedisMapper {
     }
 
     @Override
-    public int saveSetJSON(@NonNull String redisKey, @NonNull List<RedisDTO> pList) throws Exception {
+    public int saveSetJSON(String redisKey, List<RedisDTO> pList) throws DataAccessException {
 
         log.info("{}.saveSetJSON Start!", this.getClass().getName());
 
@@ -350,7 +350,7 @@ public class MyRedisMapper implements IMyRedisMapper {
     }
 
     @Override
-    public Set<RedisDTO> getSetJSON(@NonNull String redisKey) throws Exception {
+    public Set<RedisDTO> getSetJSON(String redisKey) throws DataAccessException {
 
         log.info("{}.getSetJSON Start!", this.getClass().getName());
 
@@ -374,7 +374,7 @@ public class MyRedisMapper implements IMyRedisMapper {
     }
 
     @Override
-    public int saveZSetJSON(@NonNull String redisKey, @NonNull List<RedisDTO> pList) throws Exception {
+    public int saveZSetJSON(String redisKey, List<RedisDTO> pList) throws DataAccessException {
 
         log.info("{}.saveZSetJSON Start!", this.getClass().getName());
 
@@ -404,7 +404,7 @@ public class MyRedisMapper implements IMyRedisMapper {
     }
 
     @Override
-    public Set<RedisDTO> getZSetJSON(@NonNull String redisKey) throws Exception {
+    public Set<RedisDTO> getZSetJSON(String redisKey) throws DataAccessException {
 
         log.info("{}.getZSetJSON Start!", this.getClass().getName());
 
@@ -417,7 +417,7 @@ public class MyRedisMapper implements IMyRedisMapper {
         // RedisDTO에 저장된 데이터를 자동으로 JSON으로 변경하기
         redisDB.setValueSerializer(new Jackson2JsonRedisSerializer<>(RedisDTO.class));
 
-        if (redisDB.hasKey(redisKey)) {
+        if (Boolean.TRUE.equals(redisDB.hasKey(redisKey))) {
             rSet = (Set) redisDB.opsForZSet().range(redisKey, 0, -1);
 
         }

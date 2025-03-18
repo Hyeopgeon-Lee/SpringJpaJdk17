@@ -1,5 +1,6 @@
 package kopo.poly.persistance.mongodb;
 
+import com.mongodb.MongoException;
 import kopo.poly.dto.MongoDTO;
 
 public interface IMongoMapper {
@@ -11,6 +12,6 @@ public interface IMongoMapper {
      * @param colNm 저장할 컬렉션 이름
      * @return 저장 결과
      */
-    int insertData(MongoDTO pDTO, String colNm) throws Exception;
+    int insertData(MongoDTO pDTO, String colNm) throws MongoException;
 }
 

@@ -24,7 +24,8 @@ public class MongoController {
     private final IMongoService mongoService;
 
     @PostMapping(value = "basic")
-    public ResponseEntity basic(@Valid @RequestBody MongoDTO pDTO, BindingResult bindingResult) throws Exception {
+    public ResponseEntity<CommonResponse> basic(@Valid @RequestBody MongoDTO pDTO, BindingResult bindingResult)
+            throws Exception {
 
         log.info("{}.basic Start!", this.getClass().getName());
 
