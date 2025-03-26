@@ -16,45 +16,50 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
-@RequestMapping(value = "/mongo/v1")
-@RequiredArgsConstructor
 @RestController
+@RequestMapping("/mongo/v1")
+@RequiredArgsConstructor
 public class MongoController {
 
+    // MongoDB 관련 비즈니스 로직 처리 서비스
     private final IMongoService mongoService;
 
-    @PostMapping(value = "basic")
-    public ResponseEntity<CommonResponse> basic(@Valid @RequestBody MongoDTO pDTO, BindingResult bindingResult)
-            throws Exception {
+    /**
+     * MongoDB 기본 저장 API
+     *
+     * @param pDTO          클라이언트로부터 전달받은 데이터
+     * @param bindingResult 유효성 검증 결과
+     * @return 저장 성공 또는 실패 여부를 담은 응답
+     */
+    @PostMapping("/basic")
+    public ResponseEntity<?> basic(@Valid @RequestBody MongoDTO pDTO, BindingResult bindingResult) throws Exception {
 
         log.info("{}.basic Start!", this.getClass().getName());
 
-        if (bindingResult.hasErrors()) { // Spring Validation 맞춰 잘 바인딩되었는지 체크
-            return CommonResponse.getErrors(bindingResult); // 유효성 검증 결과에 따른 에러 메시지 전달
-
+        // 1. DTO 유효성 검사 실패 시 에러 응답 반환
+        if (bindingResult.hasErrors()) {
+            return CommonResponse.getErrors(bindingResult);
         }
 
-        String msg; // 저장 결과 메시지
+        // 2. 전달받은 DTO 로그 출력
+        log.info("Received MongoDTO: {}", pDTO);
 
-
-        log.info("pDTO : {}", pDTO); // 입력 받은 값 확인하기
-
+        // 3. MongoDB에 데이터 저장 시도
         int res = mongoService.mongoTest(pDTO);
 
-        if (res == 1) {
-            msg = "저장 성공하였습니다.";
+        // 4. 저장 결과 메시지 설정
+        String msg = (res == 1) ? "저장 성공하였습니다." : "저장 실패하였습니다.";
 
-        } else {
-            msg = "저장 실패하였습니다.";
-
-        }
-
-        MsgDTO dto = MsgDTO.builder().result(res).msg(msg).build();
+        // 5. 결과 메시지를 DTO로 구성
+        MsgDTO dto = MsgDTO.builder()
+                .result(res)
+                .msg(msg)
+                .build();
 
         log.info("{}.basic End!", this.getClass().getName());
 
+        // 6. 공통 응답 객체에 결과 담아 반환
         return ResponseEntity.ok(
                 CommonResponse.of(HttpStatus.OK, HttpStatus.OK.series().name(), dto));
     }
 }
-

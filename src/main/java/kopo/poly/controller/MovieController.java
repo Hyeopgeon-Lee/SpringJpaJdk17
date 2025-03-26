@@ -14,47 +14,54 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Slf4j
-@RequestMapping(value = "/movie/v1")
-@RequiredArgsConstructor
 @RestController
+@RequestMapping("/movie/v1")
+@RequiredArgsConstructor
 public class MovieController {
 
+    // 영화 관련 비즈니스 로직을 처리하는 서비스 객체 주입
     private final IMovieService movieService;
 
     /**
-     * CGV 영화 순위 가져오기
+     * 음성 명령을 기반으로 CGV 영화 순위를 가져오는 API
+     *
+     * @param pDTO          사용자의 음성 명령이 담긴 요청 DTO
+     * @param bindingResult 유효성 검사 결과
+     * @return 영화 순위 목록 또는 에러 메시지 포함 응답
      */
-    @PostMapping(value = "speechcommand")
-    public ResponseEntity getMovie(@Valid @RequestBody MovieDTO pDTO, BindingResult bindingResult) throws Exception {
+    @PostMapping("/speechcommand")
+    public ResponseEntity<?> getMovie(@Valid @RequestBody MovieDTO pDTO, BindingResult bindingResult) throws Exception {
 
-        log.info("{}.getMovie start!", this.getClass().getName());
+        log.info("{}.getMovie start!", getClass().getName());
 
-        if (bindingResult.hasErrors()) { // Spring Validation 맞춰 잘 바인딩되었는지 체크
-            return CommonResponse.getErrors(bindingResult); // 유효성 검증 결과에 따른 에러 메시지 전달
-
+        // 1. 입력값 유효성 검사 결과 확인 (DTO에 정의된 @Valid 기반)
+        if (bindingResult.hasErrors()) {
+            // 유효성 오류가 있다면 에러 메시지를 포함한 공통 응답 반환
+            return CommonResponse.getErrors(bindingResult);
         }
 
-        List<MovieDTO> rList = null;
+        // 2. 사용자 음성 명령 출력 (디버깅 목적)
+        log.info("Received speech command: {}", pDTO.speechCommand());
 
-        log.info("pDTO : {}", pDTO);
+        // 3. 음성 명령에 포함될 수 있는 '영화'와 유사한 키워드 목록 정의
+        List<String> movieKeywords = List.of("영화", "영하", "연하", "연화");
 
-        // 영화와 비슷한 단어가 존재하면 CGV 영화 순위 가져오기 수행
-        if ((pDTO.speechCommand().contains("영화")) || (pDTO.speechCommand().contains("영하"))
-                || (pDTO.speechCommand().contains("연하")) || (pDTO.speechCommand().contains("연화"))) {
+        // 4. 입력된 음성 명령에서 키워드 중 하나라도 포함되어 있는지 확인
+        boolean containsKeyword = movieKeywords.stream()
+                .anyMatch(keyword -> pDTO.speechCommand().contains(keyword));
 
-            // Java 8부터 제공되는 Optional 활용하여 NPE(Null Pointer Exception) 처리
-            rList = Optional.ofNullable(movieService.getMovieRank()).orElseGet(ArrayList::new);
+        // 5. 영화 관련 명령이 포함되어 있다면 영화 순위 조회, 아니면 빈 리스트 반환
+        List<MovieDTO> rList = containsKeyword
+                ? Optional.ofNullable(movieService.getMovieRank()).orElse(List.of())
+                : List.of();
 
-        }
+        log.info("{}.getMovie end!", getClass().getName());
 
-        log.info("{}.getMovie end!", this.getClass().getName());
-
-        return ResponseEntity.ok(
-                CommonResponse.of(HttpStatus.OK, HttpStatus.OK.series().name(), rList));
+        // 6. 정상 처리된 결과를 공통 응답 객체에 담아 반환
+        return ResponseEntity.ok(CommonResponse.of(HttpStatus.OK, "SUCCESS", rList));
     }
 }
